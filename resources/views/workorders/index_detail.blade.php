@@ -18,11 +18,11 @@
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title"><i class="fa fa-tag"> Order </i></h3>
+              <h3 class="box-title">Work Order</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <!-- <table id="example1" class="table table-bordered table-striped">
+              <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                   <th>Name</th>
@@ -348,160 +348,7 @@
                   </td>
                 </tr>
                 </tfoot>
-              </table> -->
-              <div class="col-lg-3 col-xs-6">
-                <div>
-                  <a href="/workorderdetail">
-                    <!-- small box -->
-                    <div class="small-box bg-aqua">
-                      <div class="inner">
-                        <h3>200</h3>
-                        <p><b>ELECTRICIAN</b></p>
-                      </div>
-                      <div class="icon">
-                        <i class="fa fa-wrench"></i>
-                      </div>
-                      <div class="small-box-footer">
-                        List Data <i class="fa fa-arrow-circle-right"></i>
-                      </div>
-                    </div>
-                  </a>
-                </div>
-              </div>
-
-              <div class="col-lg-3 col-xs-6">
-                <div>
-                <a href="/workorderdetail">
-                    <div class="small-box bg-aqua">
-                      <div class="inner">
-                        <h3>150</h3>
-                        <p><b>SECURITY</b></p>
-                      </div>
-                      <div class="icon">
-                        <i class="fa fa-user-circle"></i>
-                      </div>
-                      <div class="small-box-footer">
-                        List Data <i class="fa fa-arrow-circle-right"></i>
-                      </div>
-                    </div>
-                  </a>
-                </div>
-              </div>
-
-              <div class="col-lg-3 col-xs-6">
-                <div>
-                <a href="/workorderdetail">
-                    <div class="small-box bg-aqua">
-                      <div class="inner">
-                        <h3>160</h3>
-                        <p><b>CLUMBING</b></p>
-                      </div>
-                      <div class="icon">
-                        <i class="fa fa-hand-grab-o"></i>
-                      </div>
-                      <div class="small-box-footer">
-                        List Data <i class="fa fa-arrow-circle-right"></i>
-                      </div>
-                    </div>
-                  </a>
-                </div>
-              </div>
-
-              <div class="col-lg-3 col-xs-6">
-                <div>
-                <a href="/workorderdetail">
-                    <div class="small-box bg-aqua">
-                      <div class="inner">
-                        <h3>135</h3>
-                        <p><b>CARPENTRY</b></p>
-                      </div>
-                      <div class="icon">
-                        <i class="fa fa-hand-paper-o"></i>
-                      </div>
-                      <div class="small-box-footer">
-                        List Data <i class="fa fa-arrow-circle-right"></i>
-                      </div>
-                    </div>
-                  </a>
-                </div>
-              </div>
-
-              <div class="col-lg-3 col-xs-6">
-                <div>
-                <a href="/workorderdetail">
-                    <div class="small-box bg-aqua">
-                      <div class="inner">
-                        <h3>150</h3>
-                        <p><b>SECURITY</b></p>
-                      </div>
-                      <div class="icon">
-                        <i class="fa fa-asterisk"></i>
-                      </div>
-                      <div class="small-box-footer">
-                        List Data <i class="fa fa-arrow-circle-right"></i>
-                      </div>
-                    </div>
-                  </a>
-                </div>
-              </div>
-
-              <div class="col-lg-3 col-xs-6">
-                <div>
-                <a href="/workorderdetail">
-                    <div class="small-box bg-aqua">
-                      <div class="inner">
-                        <h3>234</h3>
-                        <p><b>ROOFING</b></p>
-                      </div>
-                      <div class="icon">
-                        <i class="fa fa-bookmark-o"></i>
-                      </div>
-                      <div class="small-box-footer">
-                        List Data <i class="fa fa-arrow-circle-right"></i>
-                      </div>
-                    </div>
-                  </a>
-                </div>
-              </div>
-
-              <div class="col-lg-3 col-xs-6">
-                <div>
-                <a href="/workorderdetail">
-                    <div class="small-box bg-aqua">
-                      <div class="inner">
-                        <h3>234</h3>
-                        <p><b>GARDENING</b></p>
-                      </div>
-                      <div class="icon">
-                        <i class="fa fa-snowflake-o"></i>
-                      </div>
-                      <div class="small-box-footer">
-                        List Data <i class="fa fa-arrow-circle-right"></i>
-                      </div>
-                    </div>
-                  </a>
-                </div>
-              </div>
-
-              <div class="col-lg-3 col-xs-6">
-                <div>
-                <a href="/workorderdetail">
-                    <div class="small-box bg-aqua">
-                      <div class="inner">
-                        <h3>#</h3>
-                        <p>ALL</p>
-                      </div>
-                      <div class="icon">
-                        <i class="fa fa-reorder"></i>
-                      </div>
-                      <div class="small-box-footer">
-                        List Data <i class="fa fa-arrow-circle-right"></i>
-                      </div>
-                    </div>
-                  </a>
-                </div>
-              </div>
-
+              </table>
             </div>
             <!-- /.box-body -->
           </div>
