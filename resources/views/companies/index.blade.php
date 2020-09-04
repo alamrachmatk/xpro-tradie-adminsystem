@@ -3,12 +3,12 @@
 @section('content')
 <section class="content-header">
       <h1>
-        Order
+        System Installer
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Data Order</a></li>
-        <li class="active">Browse Order</li>
+        <li><a href="#">System Installer</a></li>
+        <li class="active">Companies</li>
       </ol>
     </section>
 
@@ -18,13 +18,13 @@
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h4 class="box-title"><i class="fa fa-tag"> Work Orders </i></h4>
+             <h4 class="box-title"><i class="fa fa-tag"> Companies </i></h4>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
               <div class="col-lg-3 col-xs-6">
                 <div>
-                  <a href="/workorderdetails">
+                  <a href="/companydetails">
                     <!-- small box -->
                     <div class="small-box bg-aqua">
                       <div class="inner">
@@ -44,7 +44,7 @@
 
               <div class="col-lg-3 col-xs-6">
                 <div>
-                <a href="/workorderdetails">
+                <a href="/companydetails">
                     <div class="small-box bg-aqua">
                       <div class="inner">
                         <h3>150</h3>
@@ -63,7 +63,7 @@
 
               <div class="col-lg-3 col-xs-6">
                 <div>
-                <a href="/workorderdetails">
+                <a href="/companydetails">
                     <div class="small-box bg-aqua">
                       <div class="inner">
                         <h3>160</h3>
@@ -82,7 +82,7 @@
 
               <div class="col-lg-3 col-xs-6">
                 <div>
-                <a href="/workorderdetails">
+                <a href="/companydetails">
                     <div class="small-box bg-aqua">
                       <div class="inner">
                         <h3>135</h3>
@@ -101,7 +101,7 @@
 
               <div class="col-lg-3 col-xs-6">
                 <div>
-                <a href="/workorderdetails">
+                <a href="/companydetails">
                     <div class="small-box bg-aqua">
                       <div class="inner">
                         <h3>150</h3>
@@ -120,7 +120,7 @@
 
               <div class="col-lg-3 col-xs-6">
                 <div>
-                <a href="/workorderdetails">
+                <a href="/companydetails">
                     <div class="small-box bg-aqua">
                       <div class="inner">
                         <h3>234</h3>
@@ -139,7 +139,7 @@
 
               <div class="col-lg-3 col-xs-6">
                 <div>
-                <a href="/workorderdetails">
+                <a href="/companydetails">
                     <div class="small-box bg-aqua">
                       <div class="inner">
                         <h3>234</h3>
@@ -158,7 +158,7 @@
 
               <div class="col-lg-3 col-xs-6">
                 <div>
-                <a href="/workorderdetails">
+                <a href="/companydetails">
                     <div class="small-box bg-aqua">
                       <div class="inner">
                         <h3>#</h3>

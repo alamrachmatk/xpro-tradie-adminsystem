@@ -19,6 +19,16 @@ Route::get('/', function () {
 
 Route::get('/index', 'DashboardController@index');
 Route::get('/dashboard', 'DashboardController@index');
-Route::get('/historyorder', 'Orders\HistoryOrderController@index');
-Route::get('/workorder', 'Orders\WorkOrderController@index');
-Route::get('/workorderdetail', 'Orders\WorkOrderController@indexdetail');
+
+Route::get('/historyorders', 'Orders\HistoryOrderController@index');
+Route::get('/historyorderdetails', 'Orders\HistoryOrderController@indexdetail');
+
+Route::get('/workorders', 'Orders\WorkOrderController@index');
+Route::get('/workorderdetails', 'Orders\WorkOrderController@indexdetail');
+
+Route::get('/companysettings', 'SystemInstallers\CompanySettingsController@index');
+
+Route::get('/companies', 'SystemInstallers\CompanyController@index');
+Route::get('companydetails', 'SystemInstallers\CompanyController@indexdetail');
+
+Route::get('/customers', 'Customers\CustomerController@index');

@@ -9,4 +9,8 @@ class HistoryOrderController extends Controller
     public function index() {
         return view('historyorders.index');
     }
+
+    public function indexdetail() {
+        return view('historyorders.index_detail');
+    }
 }

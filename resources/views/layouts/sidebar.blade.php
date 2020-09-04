@@ -34,7 +34,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="/dashboard"><i class="fa fa-circle-o"></i> Dashboard</a></li>
+            <li><a href="/dashboard"><i class="fa fa-circle-o"></i> Dashboard </a></li>
           </ul>
         </li>
         <li class="treeview">
@@ -45,19 +45,16 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="/workorder"><i class="fa fa-circle-o"></i> Work Order</a></li>
-            <li><a href="/historyorder"><i class="fa fa-circle-o"></i> History Order</a></li>
+            <li><a href="/workorders"><i class="fa fa-circle-o"></i> Work Orders </a></li>
+            <li><a href="/historyorders"><i class="fa fa-circle-o"></i> History Orders </a></li>
           </ul>
         </li>
-        <li class="treeview">
-          <a href="#">
+        <li>
+          <a href="/customers">
             <i class="fa fa-users"></i> <span>Customers</span>
             <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
-          <ul class="treeview-menu">
-          </ul>
         </li>
         <li class="treeview">
           <a href="#">
@@ -67,6 +64,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
+            <li><a href="/companies"><i class="fa fa-circle-o"></i> Companies </a></li>
+            <li><a href="/companysettings"><i class="fa fa-circle-o"></i> Company Settings </a></li>
           </ul>
         </li>
         <li class="treeview">
