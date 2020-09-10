@@ -21,5 +21,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/customers', 'Customers\CustomerController@index');
 Route::post('customers/store', 'Customers\CustomerController@store');
 Route::get('customers/{id?}', 'Customers\CustomerController@show');
-Route::post('/customers/update', 'Customers\CustomerController@update');
-Route::post('/customers/delete', 'Customers\CustomerController@delete');
+Route::post('/customers/update/{id?}', 'Customers\CustomerController@update');
+Route::post('/customers/delete/{id?}', 'Customers\CustomerController@delete');

@@ -103,7 +103,7 @@
                                 </tr>
                                 <tr>
                                     <th>Driving Licence</th>
-                                    <td><img src="/images/customers/1599541395b.jpeg" class="img-fluid" alt="driving licence" style="height: 150px;"></td>
+                                    <td><img src="/images/customers/dv-1599628472.jpeg" class="img-fluid" alt="driving licence" style="height: 150px;"></td>
                                 </tr>
                                 <tr>
                                     <th>Photo ID</th>
@@ -111,7 +111,7 @@
                                 </tr>
                                 <tr>
                                     <th>Avatar</th>
-                                    <td><img src="/images/customers/1599541395a.jpg" class="img-fluid" alt="avatar" style="height: 150px;"></td>
+                                    <td><img src="/images/customers/avatar-1599629330.jpg" class="img-fluid" alt="avatar" style="height: 150px;"></td>
                                 </tr>
                                 <tr>
                                     <th>Status</th>
@@ -280,6 +280,7 @@
                     title="XPRO Tradie - Edit Customer"
                     size="lg"
                     :hide-footer="true"
+                    @hidden="clearForm"
                     centered
                 >
                     <b-form @submit.prevent="customerUpdate" enctype="multipart/form-data">
@@ -374,7 +375,7 @@
                                 placeholder="upload image..."
                                 v-on:change="onDrivingLicenceChange">
                             </b-form-file>
-                            <img src="/images/customers/1599541395b.jpeg" class="img-fluid" alt="driving licence" style="height: 150px;">
+                            <img src="/images/customers/dv-1599628472.jpeg" class="img-fluid" alt="driving licence" style="height: 150px;">
                         </b-form-group>
                         <b-form-group
                             label="Photo ID"
@@ -394,7 +395,7 @@
                                 placeholder="upload image..."
                                 v-on:change="onAvatarChange">
                             </b-form-file>
-                            <img src="/images/customers/1599541395a.jpg" class="img-fluid" alt="driving licence" style="height: 150px;">
+                            <img src="/images/customers/avatar-1599629330.jpg" class="img-fluid" alt="driving licence" style="height: 150px;">
                         </b-form-group>
                         <b-form-group
                             label="Status"
@@ -424,6 +425,7 @@
                     size="md"
                     class="modal-danger"
                     :hide-footer="true"
+                    @hidden="clearForm"
                     centered>
                     <p>Are you sure want to delete customer [{{ form.id }}] - [{{ form.firstName }}] [{{ form.lastName }}]</p>
                     <div class="d-flex justify-content-end">
@@ -466,7 +468,21 @@ export default {
                 category: null,
                 companyName:'',
                 abncnNumber:'',
-                drivingLicence:'',
+                drivingLicence:null,
+                photoID:'',
+                avatar:'',
+                status:'',
+            },
+            oldForm: {
+                firstName: '',
+                lastName: '',
+                email: '',
+                phone: '',
+                address: '',
+                category: null,
+                companyName:'',
+                abncnNumber:'',
+                drivingLicence:null,
                 photoID:'',
                 avatar:'',
                 status:'',
@@ -524,7 +540,8 @@ export default {
             this.prevAvatar = URL.createObjectURL(this.form.avatar);
         },
         openEditModal(id) {
-            this.clearForm();
+            //this.clearForm();
+            //console.log(this.$refs.table.localItems[id]);
             this.getCustomerID(id);
             this.$bvModal.show('modal-edit-customer');
         },
@@ -553,19 +570,32 @@ export default {
             let uri = `http://localhost:8000/api/customers/${id}`;
             this.axios.get(uri).then((response) => {
                 this.dataCustomerID = response.data.data;
-                this.form.id = this.dataCustomerID.id
-                this.form.firstName = this.dataCustomerID.first_name
-                this.form.lastName = this.dataCustomerID.last_name
-                this.form.email = this.dataCustomerID.email
-                this.form.phone = this.dataCustomerID.phone
-                this.form.address = this.dataCustomerID.address
-                this.form.category = this.dataCustomerID.category
-                this.form.companyName = this.dataCustomerID.company_name
-                this.form.abncnNumber = this.dataCustomerID.abn_cn_number
-                this.form.drivingLicence = this.dataCustomerID.driving_licence
-                this.form.photoID = this.dataCustomerID.photo_id
-                this.form.avatar = this.dataCustomerID.avatar
-                this.form.status = this.dataCustomerID.status
+                this.form.id = this.dataCustomerID.id;
+                this.form.firstName = this.dataCustomerID.first_name;
+                this.form.lastName = this.dataCustomerID.last_name;
+                this.form.email = this.dataCustomerID.email;
+                this.form.phone = this.dataCustomerID.phone;
+                this.form.address = this.dataCustomerID.address;
+                this.form.category = this.dataCustomerID.category;
+                this.form.companyName = this.dataCustomerID.company_name;
+                this.form.abncnNumber = this.dataCustomerID.abn_cn_number;
+                this.form.drivingLicence = this.dataCustomerID.driving_licence;
+                this.form.photoID = this.dataCustomerID.photo_id;
+                this.form.avatar = this.dataCustomerID.avatar;
+                this.form.status = this.dataCustomerID.status; 
+
+                this.oldForm.firstName = this.dataCustomerID.first_name;
+                this.oldForm.lastName = this.dataCustomerID.last_name;
+                this.oldForm.email = this.dataCustomerID.email;
+                this.oldForm.phone = this.dataCustomerID.phone;
+                this.oldForm.address = this.dataCustomerID.address;
+                this.oldForm.category = this.dataCustomerID.category;
+                this.oldForm.companyName = this.dataCustomerID.company_name;
+                this.oldForm.abncnNumber = this.dataCustomerID.abn_cn_number;
+                this.oldForm.drivingLicence = this.dataCustomerID.driving_licence;
+                this.oldForm.photoID = this.dataCustomerID.photo_id;
+                this.oldForm.avatar = this.dataCustomerID.avatar;
+                this.oldForm.status = this.dataCustomerID.status; 
             });
         },
         getAllCustomers() {
@@ -613,28 +643,49 @@ export default {
         customerUpdate() {
             this.progressModal = true;
             var data = new FormData()
-            data.append('id', this.form.id)
-            data.append('first_name', this.form.firstName)
-            data.append('last_name', this.form.lastName)
-            data.append('email', this.form.email)
-            data.append('phone', this.form.phone)
-            data.append('address', this.form.address)
-            data.append('category', this.form.category)
-            data.append('company_name', this.form.companyName)
-            data.append('abn_cn_number', this.form.abncnNumber)
-            data.append('driving_licence', this.form.drivingLicence)
-            data.append('photo_id', this.form.photoID)
-            data.append('avatar', this.form.avatar)
-            data.append('status', this.form.status)
-
+            if (this.form.firstName != this.oldForm.firstName) {
+                data.append('first_name', this.form.firstName);
+            }
+            if (this.form.lastName != this.oldForm.lastName) {
+                data.append('last_name', this.form.lastName);
+            }
+            if (this.form.email != this.oldForm.email) {
+                data.append('email', this.form.email);
+            }
+            if (this.form.phone != this.oldForm.phone) {
+                data.append('phone', this.form.phone);
+            }
+            if (this.form.address != this.oldForm.address) {
+                data.append('address', this.form.address);
+            }
+            if (this.form.category != this.oldForm.category) {
+                data.append('category', this.form.category);
+            }
+            if (this.form.companyName != this.oldForm.companyName) {
+                data.append('company_name', this.form.companyName);
+            }
+            if (this.form.abncnNumber != this.oldForm.abncnNumber) {
+                data.append('abn_cn_number', this.form.abncnNumber);
+            }
+            if (this.form.drivingLicence != this.oldForm.drivingLicence) {
+                data.append('driving_licence', this.form.drivingLicence);
+            }
+            if (this.form.photoID != this.oldForm.photoID) {
+                data.append('photo_id', this.form.photoID);
+            }
+            if (this.form.avatar != this.oldForm.avatar) {
+                data.append('avatar', this.form.avatar);
+            }
+            if (this.form.status != this.oldForm.status) {
+                data.append('status', this.form.status);
+            }
             const config = {
                 headers: { 'content-type': 'multipart/form-data' }
             }
 
-            let uri = 'http://localhost:8000/api/customers/update';
+            let uri = `http://localhost:8000/api/customers/update/${this.form.id}`;
             this.axios.post(uri, data, config)
                 .then((response) => {
-                    this.clearForm();
                     this.progressModal = false;
                     this.$bvModal.hide('modal-edit-customer');
                     this.$refs.table.refresh()
@@ -643,17 +694,15 @@ export default {
         customerDelete() {
             this.progressModal = true;
             var data = new FormData()
-            data.append('id', this.form.id)
             data.append('deleted', 1)
 
             const config = {
                 headers: { 'content-type': 'multipart/form-data' }
             }
 
-            let uri = 'http://localhost:8000/api/customers/delete';
+            let uri = `http://localhost:8000/api/customers/delete/${this.form.id}`;
             this.axios.post(uri, data, config)
                 .then((response) => {
-                    this.clearForm();
                     this.progressModal = false;
                     this.$bvModal.hide('modal-delete-customer');
                     this.$refs.table.refresh()

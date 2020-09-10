@@ -28,6 +28,7 @@ class CustomerController extends Controller
             'phone' => 'required',
             'address' => 'required',
             'category' => 'required',
+            'driving_licence' => 'required',
             'photo_id' => 'required',
             'status' => 'required',
         ]);
@@ -100,102 +101,54 @@ class CustomerController extends Controller
         }
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        //validate data
-        $validator = Validator::make($request->all(), [
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'email' => 'required|email',
-            'phone' => 'required',
-            'address' => 'required',
-            'category' => 'required',
-            'photo_id' => 'required',
-            'status' => 'required',
-        ],
-        [
-            'first_name.required' => 'First Name Required !',
-            'last_name.required' => 'Last Name Required !',
-            'email.required' => 'email Name Required !',
-            'phone.required' => 'Phone Required !',
-            'address.required' => 'Address Required !',
-            'category.required' => 'Category Required !',
-            'photo_id.required' => 'Category Required !',
-            'status.required' => 'Status Required !',
-        ]
-        );
+        $customerByID = Customers::findOrFail($id);
+        $avatarName = null;
+        $drivingLicenceName = null;
+        if($request->avatar != null && $request->avatar != '') {
+            $avatarName = 'avatar-'.time().'.'.$request->avatar->getClientOriginalExtension();
+        }
+        if($request->driving_licence != null && $request->driving_licence != '') {
+            $drivingLicenceName = 'dv-'.time().'.'.$request->driving_licence->getClientOriginalExtension();
+        }
 
-        if($validator->fails()) {
+        $customer = $customerByID->update($request->all());
 
-            return response()->json([
-                'success' => false,
-                'message' => 'Please Fill in the Empty',
-                'data'    => $validator->errors()
-            ],400);
-
-        } else {
-            $avatarName = null;
-            $drivingLicenceName = null;
+        if ($customer) {
             if($request->avatar != null && $request->avatar != '') {
-                $avatarName = time().'avatar.'.$request->avatar->getClientOriginalExtension();
+                $request->avatar->move(public_path('images/customers'), $avatarName);
             }
             if($request->driving_licence != null && $request->driving_licence != '') {
-                $drivingLicenceName = time().'dv.'.$request->driving_licence->getClientOriginalExtension();
-            }
-            $customer = Customers::whereId($request->input('id'))->update([
-                'first_name' => $request->input('first_name'),
-                'last_name'   => $request->input('last_name'),
-                'email'   => $request->input('email'),
-                'phone'   => $request->input('phone'),
-                'address'   => $request->input('address'),
-                'category'   => $request->input('category'),
-                'company_name'   => $request->input('company_name'),
-                'abn_cn_number'   => $request->input('abn_cn_number'),
-                'driving_licence'   => $drivingLicenceName,
-                'photo_id'   => $request->input('photo_id'),
-                'avatar'   => $avatarName,
-                'status'   => $request->input('status'),
-            ]);
-
-            if ($customer) {
-                if($request->avatar != null && $request->avatar != '') {
-                    $request->avatar->move(public_path('customers/images'), $avatarName);
-                }
-                if($request->driving_licence != null && $request->driving_licence != '') {
-                    $request->driving_licence->move(public_path('customers/images'), $drivingLicenceName);
-                }
-
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Data successfully update!',
-                ], 200);
-            } else {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Data failed update!',
-                ], 500);
+                $request->driving_licence->move(public_path('images/customers'), $drivingLicenceName);
             }
 
+            return response()->json([
+                'success' => true,
+                'message' => 'Data successfully update!',
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data failed update!',
+            ], 500);
         }
 
     }
 
-    public function delete(Request $request)
+    public function delete(Request $request, $id)
     {
         //validate data
         $validator = Validator::make($request->all(), [
-            'id' => 'required',
             'deleted' => 'required',
         ],
         [
-            'id.required' => 'ID Required !',
             'deleted.required' => 'deleted Required !',
-        
         ]);
 
-        $customer = Customers::whereId($request->input('id'))->update([
-            'deleted' => $request->input('deleted'),
-        ]);
+        $customerByID = Customers::findOrFail($id);
+
+        $customer = $customerByID->update($request->all());
 
         if ($customer) {
             return response()->json([
