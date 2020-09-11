@@ -103,7 +103,7 @@
                                 </tr>
                                 <tr>
                                     <th>Driving Licence</th>
-                                    <td><img src="/images/customers/dv-1599628472.jpeg" class="img-fluid" alt="driving licence" style="height: 150px;"></td>
+                                    <td><img :src="data.item.driving_licence" class="img-thumbnail" alt="driving licence" style="height: 170px;"></td>
                                 </tr>
                                 <tr>
                                     <th>Photo ID</th>
@@ -111,7 +111,7 @@
                                 </tr>
                                 <tr>
                                     <th>Avatar</th>
-                                    <td><img src="/images/customers/avatar-1599629330.jpg" class="img-fluid" alt="avatar" style="height: 150px;"></td>
+                                    <td><img :src="data.item.avatar" class="rounded-circle" alt="avatar" style="height: 200px;"></td>
                                 </tr>
                                 <tr>
                                     <th>Status</th>
@@ -375,7 +375,7 @@
                                 placeholder="upload image..."
                                 v-on:change="onDrivingLicenceChange">
                             </b-form-file>
-                            <img src="/images/customers/dv-1599628472.jpeg" class="img-fluid" alt="driving licence" style="height: 150px;">
+                            <img :src="form.drivingLicence" class="img-thumbnail" alt="driving licence" style="height: 170px;">
                         </b-form-group>
                         <b-form-group
                             label="Photo ID"
@@ -395,7 +395,7 @@
                                 placeholder="upload image..."
                                 v-on:change="onAvatarChange">
                             </b-form-file>
-                            <img src="/images/customers/avatar-1599629330.jpg" class="img-fluid" alt="driving licence" style="height: 150px;">
+                            <img :src="form.avatar" class="rounded-circle" alt="driving licence" style="height: 200px;">
                         </b-form-group>
                         <b-form-group
                             label="Status"
@@ -439,7 +439,6 @@
                         </div>
                     </div>
                 </b-modal>
-                
                 <!-- /.box-body -->
             </div>
             <!-- /.box -->
@@ -482,9 +481,9 @@ export default {
                 category: null,
                 companyName:'',
                 abncnNumber:'',
-                drivingLicence:null,
+                drivingLicence: null,
                 photoID:'',
-                avatar:'',
+                avatar: null,
                 status:'',
             },
             progressModal: false,
@@ -540,8 +539,6 @@ export default {
             this.prevAvatar = URL.createObjectURL(this.form.avatar);
         },
         openEditModal(id) {
-            //this.clearForm();
-            //console.log(this.$refs.table.localItems[id]);
             this.getCustomerID(id);
             this.$bvModal.show('modal-edit-customer');
         },
@@ -567,8 +564,8 @@ export default {
             this.prevAvatar = null;
         },
         getCustomerID(id) {
-            let uri = `http://localhost:8000/api/customers/${id}`;
-            this.axios.get(uri).then((response) => {
+            let url = `http://localhost:8000/api/customers/${id}`;
+            this.axios.get(url).then((response) => {
                 this.dataCustomerID = response.data.data;
                 this.form.id = this.dataCustomerID.id;
                 this.form.firstName = this.dataCustomerID.first_name;
@@ -599,9 +596,9 @@ export default {
             });
         },
         getAllCustomers() {
-            let uri = 'http://localhost:8000/api/customers';
+            let url = 'http://localhost:8000/api/customers';
             let promise = axios.get(
-                uri
+                url
             )
             return promise.then((response) => {
                 const customers = response.data
@@ -632,8 +629,8 @@ export default {
                     headers: { 'content-type': 'multipart/form-data' }
             }
 
-            let uri = 'http://localhost:8000/api/customers/store';
-            this.axios.post(uri, data, config)
+            let url = 'http://localhost:8000/api/customers/store';
+            this.axios.post(url, data, config)
                 .then((response) => {
                     this.progressModal = false;
                     this.$bvModal.hide('modal-create-customer');
@@ -683,8 +680,8 @@ export default {
                 headers: { 'content-type': 'multipart/form-data' }
             }
 
-            let uri = `http://localhost:8000/api/customers/update/${this.form.id}`;
-            this.axios.post(uri, data, config)
+            let url = `http://localhost:8000/api/customers/update/${this.form.id}`;
+            this.axios.post(url, data, config)
                 .then((response) => {
                     this.progressModal = false;
                     this.$bvModal.hide('modal-edit-customer');
@@ -700,8 +697,8 @@ export default {
                 headers: { 'content-type': 'multipart/form-data' }
             }
 
-            let uri = `http://localhost:8000/api/customers/delete/${this.form.id}`;
-            this.axios.post(uri, data, config)
+            let url = `http://localhost:8000/api/customers/delete/${this.form.id}`;
+            this.axios.post(url, data, config)
                 .then((response) => {
                     this.progressModal = false;
                     this.$bvModal.hide('modal-delete-customer');

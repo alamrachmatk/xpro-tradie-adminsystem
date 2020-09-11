@@ -27,3 +27,5 @@ Route::post('/customers/delete/{id?}', 'Customers\CustomerController@delete');
 
 //new orders
 Route::get('/neworders', 'Orders\NewOrderController@index');
+Route::get('neworders/{id?}', 'Orders\NewOrderController@show');
+Route::post('/neworders/reject/{id?}', 'Orders\NewOrderController@reject');

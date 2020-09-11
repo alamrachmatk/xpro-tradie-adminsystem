@@ -11,7 +11,28 @@ use App\Http\Controllers\Controller;
 class CustomerController extends Controller 
 {
     public function index() {
-        $data = Customers::orderBy('id', 'DESC')->where('deleted', 0)->get();
+        $queryCustomers = Customers::orderBy('id', 'DESC')->where('deleted', 0)->get();
+        $data = [];
+        
+        foreach($queryCustomers as $customer) {
+            $data[] = [
+                'id' => $customer->id,
+                'first_name' => $customer->first_name,
+                'last_name' => $customer->last_name,
+                'email' => $customer->email,
+                'phone' => $customer->phone,
+                'address' => $customer->address,
+                'category' => $customer->category,
+                'name' => $customer->company_name,
+                'abn_cn_number' => $customer->abn_cn_number,
+                'driving_licence' => '/'.ENV('CUSTOMER_IMAGE_URL_DV').'/'.$customer->driving_licence,
+                'photo_id' => $customer->photo_id,
+                'avatar' => '/'.ENV('CUSTOMER_IMAGE_URL_AVATAR').'/'.$customer->avatar,
+                'status' => $customer->status,
+                'created_at' => $customer->customer_created,
+            ];
+        }
+
         return response([
             'success' => true,
             'message' => 'Data Customers',
@@ -64,10 +85,10 @@ class CustomerController extends Controller
             ]);
             if ($customer) {
                 if($request->avatar != null && $request->avatar != '') {
-                    $request->avatar->move(public_path('customers/images'), $avatarName);
+                    $request->avatar->move(ENV('CUSTOMER_IMAGE_URL_AVATAR'), $avatarName);
                 }
                 if($request->driving_licence != null && $request->driving_licence != '') {
-                    $request->driving_licence->move(public_path('customers/images'), $drivingLicenceName);
+                    $request->driving_licence->move(ENV('CUSTOMER_IMAGE_URL_DV'), $drivingLicenceName);
                 }
                 
                 return response()->json([
@@ -85,12 +106,30 @@ class CustomerController extends Controller
 
     public function show($id) {
         $customer = Customers::whereId($id)->first();
+        $data = [];
 
+        $data = [
+            'id' => $customer->id,
+            'first_name' => $customer->first_name,
+            'last_name' => $customer->last_name,
+            'email' => $customer->email,
+            'phone' => $customer->phone,
+            'address' => $customer->address,
+            'category' => $customer->category,
+            'name' => $customer->company_name,
+            'abn_cn_number' => $customer->abn_cn_number,
+            'driving_licence' => '/'.ENV('CUSTOMER_IMAGE_URL_DV').'/'.$customer->driving_licence,
+            'photo_id' => $customer->photo_id,
+            'avatar' => '/'.ENV('CUSTOMER_IMAGE_URL_AVATAR').'/'.$customer->avatar,
+            'status' => $customer->status,
+            'created_at' => $customer->customer_created,
+        ];
+        
         if ($customer) {
             return response()->json([
                 'success' => true,
                 'message' => 'Data Customer',
-                'data'    => $customer
+                'data'    => $data
             ], 200);
         } else {
             return response()->json([
@@ -117,10 +156,10 @@ class CustomerController extends Controller
 
         if ($customer) {
             if($request->avatar != null && $request->avatar != '') {
-                $request->avatar->move(public_path('images/customers'), $avatarName);
+                $request->avatar->move(ENV('CUSTOMER_IMAGE_URL_AVATAR'), $avatarName);
             }
             if($request->driving_licence != null && $request->driving_licence != '') {
-                $request->driving_licence->move(public_path('images/customers'), $drivingLicenceName);
+                $request->driving_licence->move(ENV('CUSTOMER_IMAGE_URL_DV'), $drivingLicenceName);
             }
 
             return response()->json([
@@ -147,7 +186,6 @@ class CustomerController extends Controller
         ]);
 
         $customerByID = Customers::findOrFail($id);
-
         $customer = $customerByID->update($request->all());
 
         if ($customer) {

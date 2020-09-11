@@ -15,11 +15,11 @@ class NeworderController extends Controller
     public function index() {
 
         $queryOrders = DB::table('orders')
-            ->select('orders.id AS order_id', 'orders.name', 'orders.due_date', 'orders.budget', 'orders.description', 'orders.status', 'orders.created_at' , 
+            ->select('orders.id AS order_id', 'orders.name', 'orders.due_date', 'orders.budget', 'orders.description', 'orders.status', 'orders.created_at AS order_created' , 
             'customers.id AS customer_id', 'customers.first_name', 'customers.last_name', 'customers.email',
              'customers.phone', 'customers.address', 'customers.category', 'customers.company_name', 
              'customers.abn_cn_number', 'customers.driving_licence', 
-             'customers.photo_id', 'customers.avatar', 'customers.status AS customer_status',
+             'customers.photo_id', 'customers.avatar', 'customers.status AS customer_status', 'customers.created_at AS customer_created',
              'company_settings.id AS company_settings_id', 'company_settings.name AS company_settings_name')
             ->join('customers', 'customers.id', '=', 'orders.customer_id')
             ->leftJoin('company_settings', 'company_settings.id', '=', 'orders.company_setting_id')
@@ -29,8 +29,17 @@ class NeworderController extends Controller
         $dataCustomer = [];
         $dataCompanySettings = [];
  
-       // if(!empty($queryOrders)) {
             foreach ($queryOrders as $order) {
+                //status customer
+                $orderStatus = $order->customer_status;
+                if ($orderStatus == 0) {
+                    $orderStatus = 'NEW';
+                } else if ($orderStatus == 1) {
+                    $orderStatus = 'APPROVED';
+                } else {
+                    $orderStatus = 'REJECT';
+                }
+
                 $dataCustomer = [
                     'id' => $order->customer_id,
                     'first_name' => $order->first_name,
@@ -38,13 +47,14 @@ class NeworderController extends Controller
                     'email' => $order->email,
                     'phone' => $order->phone,
                     'address' => $order->address,
-                    'category' => $order->category,
+                    'category' => $order->category == 1 ? 'Company' : 'Housing',
                     'name' => $order->company_name,
                     'abn_cn_number' => $order->abn_cn_number,
-                    'driving_licence' => $order->driving_licence,
+                    'driving_licence' => '/'.ENV('CUSTOMER_IMAGE_URL_DV').'/'.$order->driving_licence,
                     'photo_id' => $order->photo_id,
-                    'avatar' => $order->avatar,
-                    'status' => $order->customer_status
+                    'avatar' => '/'.ENV('CUSTOMER_IMAGE_URL_AVATAR').'/'.$order->avatar,
+                    'status' => $orderStatus,
+                    'created_at' => $order->customer_created,
                 ];
                 $dataCompanySettings = [
                     'id' => $order->company_settings_id,
@@ -60,7 +70,8 @@ class NeworderController extends Controller
                     'status' => $order->status,
                     'description' => $order->description,
                     'customer' => $dataCustomer,
-                    'company_settings' => $dataCompanySettings
+                    'company_setting' => $dataCompanySettings,
+                    'created_at' => $order->order_created,
                 ];
             }
        // }
@@ -70,26 +81,50 @@ class NeworderController extends Controller
             'message' => 'Data New Orders',
             'data' => $data
         ]);
-        // $data = Orders::get();
-        // return response([
-        //     'success' => true,
-        //     'message' => 'Data New Orders',
-        //     'data' => $data
-        // ]);
 
-        // $queryOrders = Orders::find() ->joinWith(['customers'])
-        //                         ->orderBy([Orders::tableName().'.id' => SORT_DESC]);
+    }
+
+    public function show($id) {
+        $Neworder = Orders::whereId($id)->first();
+
+        if ($Neworder) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Data New Order',
+                'data'    => $Neworder
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data not dfound!',
+                'data'    => null
+            ], 404);
+        }
+    }
+
+    public function reject(Request $request, $id) {
+        //validate data
+        $validator = Validator::make($request->all(), [
+            'status' => 'required',
+        ],
+        [
+            'status.required' => 'status Required !',
+        ]);
+
+        $newOrderByID = Orders::findOrFail($id);
+        $order = $newOrderByID->update($request->all());
 
 
-        // $orders = $queryOrders->all();
-        // $data = [];
-        // if(!empty($orders)) {
-        //     foreach ($orders as $order) {
-        //         $data = [
-        //             'id' => $order->id,
-        //         ];
-        //     }
-        // }
-
+        if ($order) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Data successfully reject/approved!',
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data failed reject/approved!',
+            ], 500);
+        }
     }
 }
