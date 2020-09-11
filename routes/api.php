@@ -18,8 +18,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+//customers
 Route::get('/customers', 'Customers\CustomerController@index');
 Route::post('customers/store', 'Customers\CustomerController@store');
 Route::get('customers/{id?}', 'Customers\CustomerController@show');
 Route::post('/customers/update/{id?}', 'Customers\CustomerController@update');
 Route::post('/customers/delete/{id?}', 'Customers\CustomerController@delete');
+
+//new orders
+Route::get('/neworders', 'Orders\NewOrderController@index');

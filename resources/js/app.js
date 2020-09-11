@@ -33,12 +33,18 @@ Vue.use(BootstrapVue)
 
 
 import CustomerComponent from './components/customers/Index.vue';
+import NewOrderComponent from "./components/neworders/Index.vue"
 
 const routes = [
     {
         name: 'customers',
         path: '/customers2',
         component: CustomerComponent
+    },
+    {
+        name: 'neworders',
+        path: '/neworders',
+        component: NewOrderComponent
     }
 ];
 
