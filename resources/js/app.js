@@ -34,6 +34,7 @@ Vue.use(BootstrapVue)
 
 import CustomerComponent from './components/customers/Index.vue';
 import NewOrderComponent from "./components/neworders/Index.vue"
+import WorkOrderComponent from "./components/workorders/Index.vue"
 
 const routes = [
     {
@@ -42,9 +43,14 @@ const routes = [
         component: CustomerComponent
     },
     {
-        name: 'neworders',
-        path: '/neworders',
-        component: NewOrderComponent
+      name: 'neworders',
+      path: '/neworders',
+      component: NewOrderComponent
+    },
+    {
+      name: 'workorders',
+      path: '/workorders',
+      component: WorkOrderComponent
     }
 ];
 
