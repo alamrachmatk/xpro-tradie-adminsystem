@@ -5,31 +5,33 @@ namespace App\Http\Controllers\Customers;
 use App\Customers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
 use App\Http\Controllers\Controller;
 
 class CustomerController extends Controller 
 {
     public function index() {
-        $queryCustomers = Customers::orderBy('id', 'DESC')->where('deleted', 0)->get();
+        $query = Customers::orderBy('id', 'DESC')->where('deleted', 0)->get();
         $data = [];
         
-        foreach($queryCustomers as $customer) {
+        foreach($query as $value) {
             $data[] = [
-                'id' => $customer->id,
-                'first_name' => $customer->first_name,
-                'last_name' => $customer->last_name,
-                'email' => $customer->email,
-                'phone' => $customer->phone,
-                'address' => $customer->address,
-                'category' => $customer->category,
-                'name' => $customer->company_name,
-                'abn_cn_number' => $customer->abn_cn_number,
-                'driving_licence' => '/'.ENV('CUSTOMER_IMAGE_URL_DV').'/'.$customer->driving_licence,
-                'photo_id' => $customer->photo_id,
-                'avatar' => '/'.ENV('CUSTOMER_IMAGE_URL_AVATAR').'/'.$customer->avatar,
-                'status' => $customer->status,
-                'created_at' => $customer->customer_created,
+                'id' => $value->id,
+                'first_name' => $value->first_name,
+                'last_name' => $value->last_name,
+                'email' => $value->email,
+                'phone' => $value->phone,
+                'address' => $value->address,
+                'category' => $value->category,
+                'name' => $value->company_name,
+                'abn_cn_number' => $value->abn_cn_number,
+                'driving_licence' => '/'.ENV('CUSTOMER_IMAGE_URL_DV').'/'.$value->driving_licence,
+                'photo_id' => $value->photo_id,
+                'avatar' => '/'.ENV('CUSTOMER_IMAGE_URL_AVATAR').'/'.$value->avatar,
+                'status' => $value->status,
+                'created_at' => $value->created_at,
+                'updated_at' => $value->updated_at,
+                'created_by' => $value->created_by,
+                'updated_by' => $value->updated_by,
             ];
         }
 
@@ -146,10 +148,10 @@ class CustomerController extends Controller
         $avatarName = null;
         $drivingLicenceName = null;
         if($request->avatar != null && $request->avatar != '') {
-            $avatarName = 'avatar-'.time().'.'.$request->avatar->getClientOriginalExtension();
+            $avatarName = time().'avatar.'.$request->avatar->getClientOriginalExtension();
         }
         if($request->driving_licence != null && $request->driving_licence != '') {
-            $drivingLicenceName = 'dv-'.time().'.'.$request->driving_licence->getClientOriginalExtension();
+            $drivingLicenceName = time().'dv.'.$request->driving_licence->getClientOriginalExtension();
         }
 
         $customer = $customerByID->update($request->all());

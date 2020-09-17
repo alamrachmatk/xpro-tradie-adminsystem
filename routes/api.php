@@ -29,3 +29,13 @@ Route::post('/customers/delete/{id?}', 'Customers\CustomerController@delete');
 Route::get('/neworders', 'Orders\NewOrderController@index');
 Route::get('neworders/{id?}', 'Orders\NewOrderController@show');
 Route::post('/neworders/reject/{id?}', 'Orders\NewOrderController@reject');
+
+//work orders
+Route::get('/workorders', 'Orders\WorkOrderController@index');
+
+// bidding
+Route::get('/biddings', 'Orders\BiddingController@index');
+Route::post('biddings/create', 'Orders\BiddingController@create');
+
+// company settings
+Route::get('/companysettings', 'SystemInstallers\CompanySettingsController@index');

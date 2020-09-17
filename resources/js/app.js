@@ -34,13 +34,16 @@ Vue.use(BootstrapVue)
 
 import CustomerComponent from './components/customers/Index.vue';
 import NewOrderComponent from "./components/neworders/Index.vue"
+import NewOrderDetailComponent from "./components/neworders/Indexdetail.vue"
 import WorkOrderComponent from "./components/workorders/Index.vue"
+import BiddingComponent from "./components/biddings/Index.vue"
+import BiddingDetailComponent from "./components/biddings/Indexdetail.vue"
 
 const routes = [
     {
-        name: 'customers',
-        path: '/customers2',
-        component: CustomerComponent
+      name: 'customers',
+      path: '/cust',
+      component: CustomerComponent
     },
     {
       name: 'neworders',
@@ -48,9 +51,26 @@ const routes = [
       component: NewOrderComponent
     },
     {
+      name: 'neworderdetails',
+      path: '/neworderdetails/:id(.*)',
+      component: NewOrderDetailComponent,
+      props: true,
+    },
+    {
       name: 'workorders',
       path: '/workorders',
       component: WorkOrderComponent
+    },
+    {
+      name: 'biddings',
+      path: '/biddings',
+      component: BiddingComponent
+    },
+    {
+      name: 'biddingdetails',
+      path: '/biddingdetails/:id(.*)',
+      component: BiddingDetailComponent,
+      props: true,
     }
 ];
 

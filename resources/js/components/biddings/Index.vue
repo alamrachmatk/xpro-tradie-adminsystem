@@ -9,7 +9,7 @@
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
                 <li><a href="#">Job Management</a></li>
-                <li><a href="#">Checking New Orders</a></li>
+                <li><a href="#">Bidding Processing</a></li>
             </ol>
         </section>
         <!--end header-->
@@ -21,13 +21,10 @@
  
                         <div class="box">
                             <div class="box-header">
-                                <h4 class="box-title"><i class="fa fa-tag"> Checking New Orders </i></h4>
+                                <h4 class="box-title"><i class="fa fa-tag"> Bidding Processing </i></h4>
                             </div>
                             <!-- /.box-header -->
                             <div class="box-body">
-                                <div class="text-center" v-if="spinnerGetAllData">
-                                    <b-spinner style="width: 4rem; height: 4rem;" variant="primary" label="Text Centered"></b-spinner>
-                                </div>
                                 <div class="row">
                                     <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12"  :key="index" v-for="(item, index) in dataCompanySetting">
                                         
@@ -36,7 +33,7 @@
                                                         <h3>150</h3>
                                                         <p><b>{{ item.name }}</b></p>
                                                     </div>
-                                                    <router-link :to="{ name: 'neworderdetails', params: {id: item.id, name: item.name } }">
+                                                    <router-link :to="{ name: 'biddingdetails', params: {id: item.id, name: item.name } }">
                                                         <div class="icon">
                                                             <i class="fa fa-user-circle"></i>
                                                         </div>
@@ -64,8 +61,7 @@
 export default {
     data:function() {
         return {
-            dataCompanySetting: {},
-            spinnerGetAllData: false,
+            dataCompanySetting: {}
         }
     },
     methods: {
@@ -77,7 +73,6 @@ export default {
             return promise.then((response) => {
                 const companysettings = response.data;
                 this.dataCompanySetting = companysettings.data;
-                this.spinnerGetAllData = false;
                 return (companysettings.data)
                 }).catch(error => {
                     console.log(error)
@@ -86,7 +81,6 @@ export default {
         },
     },
     created() {
-        this.spinnerGetAllData = true;
         this.getAllCompanySettings();
     }
 }

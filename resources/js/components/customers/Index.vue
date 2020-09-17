@@ -1,14 +1,16 @@
 <template>
     <div>
+        <!--header-->
         <section class="content-header">
-        <h1>
-            Customers
-        </h1>
-        <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li><a href="#">Customers</a></li>
-        </ol>
+            <h3>
+                Customers
+            </h3>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li><a href="#">Customers</a></li>
+            </ol>
         </section>
+        <!--end header-->
 
         <!-- Main content -->
         <section class="content">
@@ -52,12 +54,12 @@
                                 </b-button>
                             </b-col>
                             <b-col cols="*">
-                                <b-button size="sm" class="btn btn-raised btn-success btn-sm" @click="openEditModal(data.item.id)"  v-b-tooltip.hover title="Edit">
+                                <b-button size="sm" class="btn btn-raised btn-success btn-sm" @click="openEditModal(data.item)"  v-b-tooltip.hover title="Edit">
                                 <i class="fa fa-pencil fa-sm"></i>
                                 </b-button>
                             </b-col>
                             <b-col cols="*">
-                                <b-button size="sm" class="btn btn-raised btn-danger btn-sm" @click="openDeleteModal(data.item.id)" v-b-tooltip.hover title="Delete">
+                                <b-button size="sm" class="btn btn-raised btn-danger btn-sm" @click="openDeleteModal(data.item)" v-b-tooltip.hover title="Delete">
                                 <i class="fa fa-remove fa-sm"></i>
                                 </b-button>
                             </b-col>
@@ -116,9 +118,9 @@
                                 <tr>
                                     <th>Status</th>
                                     <td>
-                                        <b-badge pill class="badge badge-info" v-if="data.item.status == '0'">NEW</b-badge>
-                                        <b-badge pill class="badge badge-success" v-if="data.item.status == '1'">ACTIVE</b-badge>
-                                        <b-badge pill class="badge badge-danger" v-if="data.item.status == '2'">BANNED</b-badge>
+                                        <b-badge pill class="badge badge-info" v-if="data.item.status == 'NEW'">NEW</b-badge>
+                                        <b-badge pill class="badge badge-success" v-if="data.item.status == 'ACTIVE'">ACTIVE</b-badge>
+                                        <b-badge pill class="badge badge-danger" v-if="data.item.status == 'BANNED'">BANNED</b-badge>
                                     </td>
                                 </tr>
                                 <tr>
@@ -435,7 +437,6 @@
                                 Loading...
                             </b-button>
                             <button type="submit" class="btn btn-primary btn-raised" v-if="!progressModal" @click.prevent="customerDelete()"><i class="fa fa-pencil"></i>  DELETE</button>
-                            <!-- <button type="reset" class="btn btn-danger btn-raised"><i class="fa fa-undo"></i> CANCEL</button> -->
                         </div>
                     </div>
                 </b-modal>
@@ -538,12 +539,39 @@ export default {
             this.form.avatar = e.target.files[0];
             this.prevAvatar = URL.createObjectURL(this.form.avatar);
         },
-        openEditModal(id) {
-            this.getCustomerID(id);
+        openEditModal(item) {
+            this.form.id = item.id;
+            this.form.firstName = item.first_name;
+            this.form.lastName = item.last_name;
+            this.form.email = item.email;
+            this.form.phone = item.phone;
+            this.form.address = item.address;
+            this.form.category = item.category;
+            this.form.companyName = item.company_name;
+            this.form.abncnNumber = item.abn_cn_number;
+            this.form.drivingLicence = item.driving_licence;
+            this.form.photoID = item.photo_id;
+            this.form.avatar = item.avatar;
+            this.form.status = item.status; 
+
+            this.oldForm.firstName = item.first_name;
+            this.oldForm.lastName = item.last_name;
+            this.oldForm.email = item.email;
+            this.oldForm.phone = item.phone;
+            this.oldForm.address = item.address;
+            this.oldForm.category = item.category;
+            this.oldForm.companyName = item.company_name;
+            this.oldForm.abncnNumber = item.abn_cn_number;
+            this.oldForm.drivingLicence = item.driving_licence;
+            this.oldForm.photoID = item.photo_id;
+            this.oldForm.avatar = item.avatar;
+            this.oldForm.status = item.status; 
             this.$bvModal.show('modal-edit-customer');
         },
-        openDeleteModal(id) {
-            this.getCustomerID(id);
+        openDeleteModal(item) {
+            this.form.id = item.id;
+            this.form.firstName = item.first_name;
+            this.form.lastName = item.last_name;
             this.$bvModal.show('modal-delete-customer');
         },
         clearForm(evt) {
@@ -562,38 +590,6 @@ export default {
             this.form.status = '';
             this.prevDrivingLicence = null;
             this.prevAvatar = null;
-        },
-        getCustomerID(id) {
-            let url = `http://localhost:8000/api/customers/${id}`;
-            this.axios.get(url).then((response) => {
-                this.dataCustomerID = response.data.data;
-                this.form.id = this.dataCustomerID.id;
-                this.form.firstName = this.dataCustomerID.first_name;
-                this.form.lastName = this.dataCustomerID.last_name;
-                this.form.email = this.dataCustomerID.email;
-                this.form.phone = this.dataCustomerID.phone;
-                this.form.address = this.dataCustomerID.address;
-                this.form.category = this.dataCustomerID.category;
-                this.form.companyName = this.dataCustomerID.company_name;
-                this.form.abncnNumber = this.dataCustomerID.abn_cn_number;
-                this.form.drivingLicence = this.dataCustomerID.driving_licence;
-                this.form.photoID = this.dataCustomerID.photo_id;
-                this.form.avatar = this.dataCustomerID.avatar;
-                this.form.status = this.dataCustomerID.status; 
-
-                this.oldForm.firstName = this.dataCustomerID.first_name;
-                this.oldForm.lastName = this.dataCustomerID.last_name;
-                this.oldForm.email = this.dataCustomerID.email;
-                this.oldForm.phone = this.dataCustomerID.phone;
-                this.oldForm.address = this.dataCustomerID.address;
-                this.oldForm.category = this.dataCustomerID.category;
-                this.oldForm.companyName = this.dataCustomerID.company_name;
-                this.oldForm.abncnNumber = this.dataCustomerID.abn_cn_number;
-                this.oldForm.drivingLicence = this.dataCustomerID.driving_licence;
-                this.oldForm.photoID = this.dataCustomerID.photo_id;
-                this.oldForm.avatar = this.dataCustomerID.avatar;
-                this.oldForm.status = this.dataCustomerID.status; 
-            });
         },
         getAllCustomers() {
             let url = 'http://localhost:8000/api/customers';
