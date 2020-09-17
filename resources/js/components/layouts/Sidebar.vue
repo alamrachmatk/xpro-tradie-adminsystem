@@ -27,18 +27,14 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
-        <li class="treeview menu-open active">
-          <a href="#">
-            <i class="fa fa-home"></i> <span>Dashboard</span>
+        <li>
+          <a href="/customers">
+            <i class="fa fa-angle-left pull-right"></i> <span>Dashboard</span>
             <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
-          <ul class="treeview-menu">
-            <li><a href="/dashboard"><i class="fa fa-circle-o"></i> Dashboard </a></li>
-          </ul>
         </li>
-        <li class="treeview">
+        <li class="treeview menu-open active">
           <a href="#">
             <i class="fa fa-table"></i> <span>Job Management</span>
             <span class="pull-right-container">
@@ -46,17 +42,31 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="/workorders"><i class="fa fa-circle-o"></i> Work Orders </a></li>
-            <li><a href="/historyorders"><i class="fa fa-circle-o"></i> History Orders </a></li>
+            <li><router-link
+                      :to="{ path: 'neworders' }"
+                    >
+                        <i class="fa fa-circle-o"></i> Checking New Orders
+                    </router-link></li>
+            <li><router-link
+                      :to="{ path: 'biddings' }"
+                    >
+                        <i class="fa fa-circle-o"></i> Bidding Processing
+                    </router-link></li>
+                    <li><router-link
+                      :to="{ path: 'workorders' }"
+                    >
+                        <i class="fa fa-circle-o"></i> Work Orders
+                    </router-link></li>
           </ul>
         </li>
-        <li>
-          <a href="/customers">
-            <i class="fa fa-users"></i> <span>Customers</span>
-            <span class="pull-right-container">
-            </span>
-          </a>
-        </li>
+
+       <li><router-link
+                      :to="{ path: 'cust' }"
+                    >
+                        <i class="fa fa-users"></i> Customers
+                    </router-link></li>
+
+ 
         <li class="treeview">
           <a href="#">
             <i class="fa fa-bell"></i> <span>System Installer</span>

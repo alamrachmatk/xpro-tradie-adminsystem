@@ -1,16 +1,15 @@
 <template>
   <div>
-    <!--header-->
+    <!--begin header-->
     <section class="content-header">
-      <h3>
-        Checking New Orders
-      </h3>
+      <h1>
+        Work Orders
+      </h1>
       <ol class="breadcrumb">
         <li>
           <a href="#"><i class="fa fa-dashboard"></i> Home</a>
         </li>
-        <li><a href="#">Job Management</a></li>
-        <li><a href="#">Checking New Orders</a></li>
+        <li><a href="#">Work Orders</a></li>
       </ol>
     </section>
     <!--end header-->
@@ -37,43 +36,55 @@
                 table-bordered
                 table-striped
                 ref="table"
-                :items="getAllNewOrders"
-                :fields="fieldNewOrders"
+                :items="getAllWorkOrder"
+                :fields="fieldWorkOrders"
               >
+                <template v-slot:cell(job_name)="data">
+                  <span>{{ data.item.new_order.name }}</span>
+                </template>
                 <template v-slot:cell(customer_name)="data">
                   <span
                     >{{ data.item.customer.first_name }}
                     {{ data.item.customer.last_name }}</span
                   >
                 </template>
+                <template v-slot:cell(due_date)="data">
+                  <span>{{ data.item.new_order.due_date }}</span>
+                </template>
+                <template v-slot:cell(description)="data">
+                  <span
+                    v-if="data.item.new_order.description.length < 10"
+                    >{{ data.item.new_order.description }}</span
+                  >
+                  <span v-else>
+                    {{ data.item.new_order.description.substring(0,50)+"....." }}
+                  </span>
+                </template>
                 <template v-slot:cell(status)="data">
                   <b-badge
                     pill
-                    class="badge badge-info"
+                    class="badge badge-danger"
                     v-if="data.item.status == '0'"
-                    >WAITING APPROVAL</b-badge
+                    >CANCEL</b-badge
                   >
                   <b-badge
                     pill
                     class="badge badge-success"
                     v-if="data.item.status == '1'"
-                    >APPROVE</b-badge
+                    >READY</b-badge
                   >
                   <b-badge
                     pill
-                    class="badge badge-danger"
+                    class="badge badge-warning"
                     v-if="data.item.status == '2'"
-                    >REJECT</b-badge
+                    >PENDING</b-badge
                   >
-                </template>
-                <template v-slot:cell(description)="data">
-                  <span
-                    v-if="data.item.description.length < 10"
-                    >{{ data.item.description }}</span
+                  <b-badge
+                    pill
+                    class="badge badge-info"
+                    v-if="data.item.status == '3'"
+                    >ONGOING</b-badge
                   >
-                  <span v-else>
-                    {{ data.item.description.substring(0,50)+"....." }}
-                  </span>
                 </template>
                 <template v-slot:cell(action)="data">
                   <b-row align-v="center">
@@ -86,38 +97,6 @@
                         title="Details"
                       >
                         <i class="fa fa-info-circle fa-sm"></i>
-                      </b-button>
-                    </b-col>
-                    <b-col cols="*">
-                      <b-button
-                        size="sm"
-                        class="btn btn-raised btn-warning btn-sm"
-                        v-b-tooltip.hover
-                        @click="openStatusModal(data.item)"
-                        title="Approve/Reject"
-                        v-if="data.item.status == 0"
-                      >
-                        <i class="fa fa-warning fa-sm"></i>
-                      </b-button>
-                      <b-button
-                        size="sm"
-                        class="btn btn-raised btn-danger btn-sm"
-                        v-b-tooltip.hover
-                        @click="openStatusModal(data.item)"
-                        title="Reject"
-                        v-if="data.item.status == 1"
-                      >
-                        <i class="fa fa-ban fa-sm"></i>
-                      </b-button>
-                      <b-button
-                        size="sm"
-                        class="btn btn-raised btn-success btn-sm"
-                        v-b-tooltip.hover
-                        @click="openStatusModal(data.item)"
-                        title="Approve"
-                        v-if="data.item.status == 2"
-                      >
-                        <i class="fa fa-check fa-sm"></i>
                       </b-button>
                     </b-col>
                   </b-row>
@@ -216,11 +195,11 @@
                         </table>
                       </b-col>
                       <b-col>
-                        <h5>Detail Data New Order</h5>
+                        <h5>Detail Data Work Order</h5>
                         <table class="table">
                           <tr>
                             <th style="width: 50%;">Name</th>
-                            <td>{{ data.item.name }}</td>
+                            <td>{{ data.item.new_order.name }}</td>
                           </tr>
                           <tr>
                             <th>Company Settings</th>
@@ -228,36 +207,42 @@
                           </tr>
                           <tr>
                             <th>Due Date</th>
-                            <td>{{ data.item.due_date }}</td>
+                            <td>{{ data.item.new_order.due_date }}</td>
                           </tr>
                           <tr>
                             <th>Budget</th>
-                            <td>{{ data.item.budget }}</td>
+                            <td>{{ data.item.new_order.budget }}</td>
                           </tr>
                           <tr>
                             <th>Description</th>
-                            <td>{{ data.item.description }}</td>
+                            <td>{{ data.item.new_order.description }}</td>
                           </tr>
                           <tr>
                             <th>Status</th>
                             <td>
                               <b-badge
                                 pill
-                                class="badge badge-info"
+                                class="badge badge-danger"
                                 v-if="data.item.status == '0'"
-                                >WAITING APPROVAL</b-badge
+                                >CANCEL</b-badge
                               >
                               <b-badge
                                 pill
                                 class="badge badge-success"
                                 v-if="data.item.status == '1'"
-                                >APPROVE</b-badge
+                                >READY</b-badge
                               >
                               <b-badge
                                 pill
-                                class="badge badge-danger"
+                                class="badge badge-warning"
                                 v-if="data.item.status == '2'"
-                                >REJECT</b-badge
+                                >PENDING</b-badge
+                              >
+                              <b-badge
+                                pill
+                                class="badge badge-info"
+                                v-if="data.item.status == '3'"
+                                >ONGOING</b-badge
                               >
                             </td>
                           </tr>
@@ -272,84 +257,6 @@
                 </template>
               </b-table>
             </div>
-
-            <b-modal
-              id="modal-reject-neworder"
-              title="Reject New Order"
-              size="md"
-              centered
-              :hide-footer="true"
-              @hidden="clearForm"
-            >
-              <p>
-                Are you sure want to
-                {{ this.form.status == '1' ? 'reject' : 'approve' }}
-                <b>[{{ form.id }}] {{ form.name }}</b>
-              </p>
-              <div class="d-flex justify-content-end">
-                <div class="form-group">
-                  <div v-if="form.status == 0">
-                    <b-button
-                      class="btn btn-primary btn-raised"
-                      v-if="progressModal"
-                    >
-                      <b-spinner small></b-spinner>
-                      Loading...
-                    </b-button>
-                    <button
-                      type="submit"
-                      class="btn btn-primary btn-raised"
-                      v-if="!progressModal"
-                      @click.prevent="newOrderStatus(1)"
-                    >
-                      <i class="fa fa-check"></i> APPROVE
-                    </button>
-                    <button
-                      type="submit"
-                      class="btn btn-danger btn-raised"
-                      v-if="!progressModal"
-                      @click.prevent="newOrderStatus(2)"
-                    >
-                      <i class="fa fa-ban"></i> REJECT
-                    </button>
-                  </div>
-                  <div v-if="form.status == 1">
-                    <b-button
-                      class="btn btn-danger btn-raised"
-                      v-if="progressModal"
-                    >
-                      <b-spinner small></b-spinner>
-                      Loading...
-                    </b-button>
-                    <button
-                      type="submit"
-                      class="btn btn-danger btn-raised"
-                      v-if="!progressModal"
-                      @click.prevent="newOrderStatus(2)"
-                    >
-                      <i class="fa fa-ban"></i> REJECT
-                    </button>
-                  </div>
-                  <div v-if="form.status == 2">
-                    <b-button
-                      class="btn btn-primary btn-raised"
-                      v-if="progressModal"
-                    >
-                      <b-spinner small></b-spinner>
-                      Loading...
-                    </b-button>
-                    <button
-                      type="submit"
-                      class="btn btn-primary btn-raised"
-                      v-if="!progressModal"
-                      @click.prevent="newOrderStatus(1)"
-                    >
-                      <i class="fa fa-check"></i> APPROVE
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </b-modal>
           </div>
         </div>
       </div>
@@ -360,47 +267,43 @@
 
 <script>
 export default {
-    data:function(){
+    data:function() {
         return {
-            $dataNewOrderID: {},
-            form: {
-                id: '',
-                name: ''
-            },
-            fieldNewOrders: [
+            fieldWorkOrders: [
                 {
                     key : 'id'
                 },
                 {
-                    key : 'name'
+                    key: 'job_name',
+                    label: 'Job Name'
                 },
                 {
                     key: 'customer_name',
                     label: 'Customer'
                 },
                 {
-                    key : 'due_date'
+                    key: 'due_date',
+                    label: 'Due Date'
                 },
                 {
-                    key : 'budget'
+                    key : 'created_at'
                 },
-                'Description',
-                'Status',
-                'Action'
+                {
+                    key : 'description'
+                },
+                {
+                    key : 'status',
+                    label : 'status'
+                },
+                'action'
             ],
-            progressModal: false,
             spinnerGetAllData: false,
         }
     },
     methods: {
-        openStatusModal(item) {
-            this.form.id = item.id;
-            this.form.name = item.name;
-            this.form.status = item.status;
-            this.$bvModal.show('modal-reject-neworder');
-        },
-        getAllNewOrders() {
-            let url = 'http://localhost:8000/api/neworders';
+        getAllWorkOrder() {
+            console.log('aaaa')
+            let url = 'http://localhost:8000/api/workorders';
             let promise = axios.get(
                 url,{
                 params: {
@@ -408,39 +311,18 @@ export default {
                 }}
             )
             return promise.then((response) => {
-                const neworders = response.data
+                const workorders = response.data
                 this.spinnerGetAllData = false;
-                return (neworders.data)
+                return (workorders.data)
                 }).catch(error => {
                     console.log(error)
                     return 
                 })
-                this.$refs.table.refresh();
-        },
-        newOrderStatus(status) {
-            this.progressModal = true;
-            var data = new FormData();
-            data.append('status' , status);
-            const config = {
-                headers: { 'content-type': 'multipart/form-data' }
-            }
-            
-            let url =  `http://localhost:8000/api/neworders/reject/${this.form.id}`;
-            this.axios.post(url, data, config)
-                .then((response) => {
-                    this.progressModal = false;
-                    this.$bvModal.hide('modal-reject-neworder');
-                    this.$refs.table.refresh()
-                });
-        },
-        clearForm(evt) {
-            this.form.id = '';
-            this.form.name = '';
-            this.form.status = '';
-        }
+                this.$refs.table.refresh()
         },
         created() {
             this.spinnerGetAllData = true;
         }
     }
+}
 </script>

@@ -31,13 +31,16 @@ Vue.use(VueAxios, axios);
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 Vue.use(BootstrapVue)
 
+import CKEditor from 'ckeditor4-vue';
+Vue.use( CKEditor );
 
 import CustomerComponent from './components/customers/Index.vue';
 import NewOrderComponent from "./components/neworders/Index.vue"
 import NewOrderDetailComponent from "./components/neworders/Indexdetail.vue"
-import WorkOrderComponent from "./components/workorders/Index.vue"
 import BiddingComponent from "./components/biddings/Index.vue"
 import BiddingDetailComponent from "./components/biddings/Indexdetail.vue"
+import WorkOrderComponent from "./components/workorders/Index.vue"
+import WorkOrderDetailComponent from "./components/workorders/Indexdetail.vue"
 
 const routes = [
     {
@@ -57,11 +60,6 @@ const routes = [
       props: true,
     },
     {
-      name: 'workorders',
-      path: '/workorders',
-      component: WorkOrderComponent
-    },
-    {
       name: 'biddings',
       path: '/biddings',
       component: BiddingComponent
@@ -71,7 +69,18 @@ const routes = [
       path: '/biddingdetails/:id(.*)',
       component: BiddingDetailComponent,
       props: true,
-    }
+    },
+    {
+      name: 'workorders',
+      path: '/workorders',
+      component: WorkOrderComponent
+    },
+    {
+      name: 'workorderdetails',
+      path: '/workorderdetails/:id(.*)',
+      component: WorkOrderDetailComponent,
+      props: true,
+    },
 ];
 
 const router = new VueRouter({

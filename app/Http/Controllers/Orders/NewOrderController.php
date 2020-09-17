@@ -75,7 +75,7 @@ class NeworderController extends Controller
                     'id' => $value->new_order_id,
                     'name' => $value->name,
                     'due_date' => $value->due_date,
-                    'budget' => $value->budget,
+                    'budget' => '$'.$value->budget,
                     'description' => $value->description,
                     'customer' => $dataCustomer,
                     'company_setting' => $dataCompanySettings,

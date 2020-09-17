@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class WorkOrderController extends Controller 
 {
-    public function index() {
+    public function index(Request $request) {
         $query = DB::table('work_orders')
         ->select('work_orders.id AS work_order_id', 'work_orders.status AS work_order_status', 'work_orders.created_at AS work_order_created_at', 'work_orders.updated_at AS work_order_updated_at',
         'work_orders.created_by AS work_order_created_by', 'work_orders.updated_by AS work_order_updated_by',
@@ -26,13 +26,14 @@ class WorkOrderController extends Controller
         ->join('orders', 'orders.work_order_id', '=', 'work_orders.id')
         ->join('new_orders', 'new_orders.id', '=', 'orders.new_order_id')
         ->join('customers', 'customers.id', '=', 'new_orders.customer_id')
-        ->leftJoin('company_settings', 'company_settings.id', '=', 'new_orders.company_setting_id')
+        ->join('company_settings', 'company_settings.id', '=', 'new_orders.company_setting_id')
+        ->where('company_settings.id', $request->company_setting_id)
         ->get();
         
         $data = [];
         $dataNewOrder = [];
         $dataCustomer = [];
-        $dataCompanyeStting = [];
+        $dataCompanyeSetting = [];
  
             foreach ($query as $value) {
                 //status customer
@@ -49,7 +50,7 @@ class WorkOrderController extends Controller
                     'id' => $value->new_order_id,
                     'name' => $value->name,
                     'due_date' => $value->due_date,
-                    'budget' => $value->budget,
+                    'budget' => '$'.$value->budget,
                     'status' => $value->status,
                     'description' => $value->description,
                     'created_at' => $value->order_created_at,

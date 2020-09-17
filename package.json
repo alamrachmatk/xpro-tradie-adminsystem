@@ -22,6 +22,7 @@
     "dependencies": {
         "bootstrap": "^4.5.2",
         "bootstrap-vue": "^2.16.0",
+        "ckeditor4-vue": "^1.1.0",
         "vee-validate": "^3.3.9",
         "vue": "^2.6.12",
         "vue-axios": "^2.1.5",

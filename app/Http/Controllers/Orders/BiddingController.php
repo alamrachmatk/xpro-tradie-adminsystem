@@ -73,7 +73,7 @@ class BiddingController extends Controller
                 'order_id' => $value->order_id,
                 'name' => $value->name,
                 'due_date' => $value->due_date,
-                'budget' => $value->budget,
+                'budget' => '$'.$value->budget,
                 'description' => $value->description,
                 'customer' => $dataCustomer,
                 'company_setting' => $dataCompanySettings,

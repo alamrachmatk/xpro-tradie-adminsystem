@@ -92,7 +92,6 @@ class CustomerController extends Controller
                 if($request->driving_licence != null && $request->driving_licence != '') {
                     $request->driving_licence->move(ENV('CUSTOMER_IMAGE_URL_DV'), $drivingLicenceName);
                 }
-                
                 return response()->json([
                     'success' => true,
                     'message' => 'Data saved successfully!',

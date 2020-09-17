@@ -1,455 +1,590 @@
 <template>
-    <div>
-        <!--header-->
-        <section class="content-header">
-            <h3>
-                Customers
-            </h3>
-            <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li><a href="#">Customers</a></li>
-            </ol>
-        </section>
-        <!--end header-->
-
-        <!-- Main content -->
-        <section class="content">
-        <div class="row">
-            <div class="container-fluid">
-            <div class="box">
-                <div class="box-header">
-                    <h4 class="box-title">Data Customers</h4>
-                    <div class="pull-right">
-                        <button 
-                            type="submit" 
-                            class="btn btn-primary btn-raised"
-                            @click.prevent="addData()">
-                            <i class="fa fa-pencil"></i> Create</button>
-                    </div>
-                </div>
-                <!-- /.box-header -->
-
-                <div class="box-body">
-                    <b-table
-                        table
-                        table-bordered 
-                        table-striped
-                        ref="table"
-                        :items="getAllCustomers"
-                        :fields="fieldsCustomer">
-                        <template v-slot:cell(category)="data">
-                            <span v-if="data.item.category == '1'">Company</span>
-                            <span v-if="data.item.category == '2'">Housing</span>
-                        </template>
-                        <template v-slot:cell(status)="data">
-                            <b-badge pill class="badge badge-info" v-if="data.item.status == '0'">NEW</b-badge>
-                            <b-badge pill class="badge badge-success" v-if="data.item.status == '1'">ACTIVE</b-badge>
-                            <b-badge pill class="badge badge-danger" v-if="data.item.status == '2'">BANNED</b-badge>
-                        </template>
-                        <template v-slot:cell(action)="data">
-                            <b-row align-v="center">
-                            <b-col cols="*">
-                                <b-button size="sm" class="btn btn-raised btn-info btn-sm" @click.stop="data.toggleDetails" v-b-tooltip.hover title="Details">
-                                    <i class="fa fa-info-circle fa-sm"></i>
-                                </b-button>
-                            </b-col>
-                            <b-col cols="*">
-                                <b-button size="sm" class="btn btn-raised btn-success btn-sm" @click="openEditModal(data.item)"  v-b-tooltip.hover title="Edit">
-                                <i class="fa fa-pencil fa-sm"></i>
-                                </b-button>
-                            </b-col>
-                            <b-col cols="*">
-                                <b-button size="sm" class="btn btn-raised btn-danger btn-sm" @click="openDeleteModal(data.item)" v-b-tooltip.hover title="Delete">
-                                <i class="fa fa-remove fa-sm"></i>
-                                </b-button>
-                            </b-col>
-                            </b-row>
-                        </template>
-                        <template slot="row-details" slot-scope="data">
-                            <div class="table-responsive">
-                            <table class="table">
-                                <tr>
-                                    <th style="width:50%">First Name:</th>
-                                    <td>{{ data.item.first_name }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Last Name</th>
-                                    <td>{{ data.item.last_name }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Email</th>
-                                    <td>{{ data.item.email }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Phone</th>
-                                    <td>{{ data.item.phone }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Address</th>
-                                    <td>{{ data.item.address }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Category</th>
-                                    <td>
-                                        <span v-if="data.item.category == '1'">Company</span>
-                                        <span v-if="data.item.category == '2'">Housing</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>Company Name</th>
-                                    <td>{{ data.item.company_name }}</td>
-                                </tr>
-                                <tr>
-                                    <th>ABN/CN Number</th>
-                                    <td>{{ data.item.abn_cn_number }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Driving Licence</th>
-                                    <td><img :src="data.item.driving_licence" class="img-thumbnail" alt="driving licence" style="height: 170px;"></td>
-                                </tr>
-                                <tr>
-                                    <th>Photo ID</th>
-                                    <td>{{ data.item.photo_id }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Avatar</th>
-                                    <td><img :src="data.item.avatar" class="rounded-circle" alt="avatar" style="height: 200px;"></td>
-                                </tr>
-                                <tr>
-                                    <th>Status</th>
-                                    <td>
-                                        <b-badge pill class="badge badge-info" v-if="data.item.status == 'NEW'">NEW</b-badge>
-                                        <b-badge pill class="badge badge-success" v-if="data.item.status == 'ACTIVE'">ACTIVE</b-badge>
-                                        <b-badge pill class="badge badge-danger" v-if="data.item.status == 'BANNED'">BANNED</b-badge>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>Created At</th>
-                                    <td>{{ data.item.created_at }}</td>
-                                </tr>
-                            </table>
-                            </div>
-                        </template>
-                    </b-table>
-                </div>
-
-                <!-- Create modal -->
-                <b-modal
-                    id="modal-create-customer"
-                    class="modal modal-info"
-                    title="XPRO Tradie - Create Customer"
-                    size="lg"
-                    :hide-footer="true"
-                    centered
-                    @hidden="clearForm"
+  <div>
+    <!--header-->
+    <section class="content-header">
+      <h3>
+        Customers
+      </h3>
+      <ol class="breadcrumb">
+        <li>
+          <a href="#"><i class="fa fa-dashboard"></i> Home</a>
+        </li>
+        <li><a href="#">Customers</a></li>
+      </ol>
+    </section>
+    <!--end header-->
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="container-fluid">
+          <div class="box">
+            <div class="box-header">
+              <h4 class="box-title"><i class="fa fa-tag"> Customers </i></h4>
+              <div class="pull-right">
+                <button
+                  type="submit"
+                  class="btn btn-primary btn-raised"
+                  @click.prevent="addData()"
                 >
-                    <b-form  @submit.prevent="customerStore" enctype="multipart/form-data">
-                        <b-form-group
-                            label="First Name"
-                            label-for="firstNameInput">
-                            <b-form-input id="firstNameInput"
-                                v-model="form.firstName"
-                                type="text"
-                                placeholder="Enter Fisrt Name"
-                                required>
-                            </b-form-input>
-                        </b-form-group>
-                        <b-form-group
-                            label="Last Name"
-                            label-for="lastNameInput">
-                            <b-form-input id="lastNameInput"
-                                v-model="form.lastName"
-                                type="text"
-                                placeholder="Enter Last Name"
-                                required>
-                            </b-form-input>
-                        </b-form-group>
-                        <b-form-group
-                            label="Email"
-                            label-for="emailInput">
-                            <b-form-input id="emailInput"
-                                v-model="form.email"
-                                type="email"
-                                placeholder="Enter Email"
-                                required>
-                            </b-form-input>
-                        </b-form-group>
-                        <b-form-group
-                            label="Phone"
-                            label-for="phoneInput">
-                            <b-form-input id="phoneInput"
-                                v-model="form.phone"
-                                type="text"
-                                placeholder="Enter Phone"
-                                required>
-                            </b-form-input>
-                        </b-form-group>
-                        <b-form-group
-                            label="Address"
-                            label-for="addressInput">
-                            <b-form-textarea
-                                id="textarea"
-                                v-model="form.address"
-                                placeholder="Enter Address"
-                                rows="5"
-                                max-rows="6">
-                            </b-form-textarea>
-                        </b-form-group>
-                       <b-form-group
-                            label="Category"
-                            label-for="categoryInput">
-                            <b-form>
-                                <b-form-select v-model="form.category" :options="optionsCategory" required></b-form-select>
-                            </b-form>
-                       </b-form-group>
-                        <b-form-group
-                            label="Company Name"
-                            label-for="companyNameInput">
-                            <b-form-input id="companyNameInput"
-                                v-model="form.companyName"
-                                type="text"
-                                placeholder="Enter Company Name">
-                            </b-form-input>
-                        </b-form-group>
-                        <b-form-group
-                            label="ABN/CN Number"
-                            label-for="abncnNumberInput">
-                            <b-form-input id="abncnNumberInput"
-                                v-model="form.abncnNumber"
-                                type="text"
-                                placeholder="Enter Company Name">
-                            </b-form-input>
-                        </b-form-group>
-                        <b-form-group
-                            label="Driving Licence"
-                            label-for="drivingLicenceInput">
-                            <b-form-file id="drivingLicenceInput"
-                                v-model="form.drivingLicence"
-                                placeholder="upload image..."
-                                v-on:change="onDrivingLicenceChange">
-                            </b-form-file>
-                            <div id="preview">
-                                <img v-if="prevDrivingLicence" :src="prevDrivingLicence" />
-                            </div>
-                        </b-form-group>
-                        <b-form-group
-                            label="Photo ID"
-                            label-for="photoIDInput">
-                            <b-form-input id="photoIDInput"
-                                v-model="form.photoID"
-                                type="text"
-                                placeholder="Enter Photo ID"
-                                required>
-                            </b-form-input>
-                        </b-form-group>
-                        <b-form-group
-                            label="Avatar"
-                            label-for="avatarInput">
-                            <b-form-file id="avatarInput"
-                                v-model="form.avatar"
-                                placeholder="upload image..."
-                                v-on:change="onAvatarChange">
-                            </b-form-file>
-                            <div id="preview">
-                                <img v-if="prevAvatar" :src="prevAvatar" />
-                            </div>
-                        </b-form-group>
-                        <b-form-group
-                            label="Status"
-                            label-for="statusInput">
-                            <b-form>
-                                <b-form-select v-model="form.status" :options="optionsStatus"></b-form-select>
-                            </b-form>
-                        </b-form-group>
-                        <div class="d-flex justify-content-end">
-                            <div class="form-group">
-                                <b-button class="btn btn-primary btn-raised" v-if="progressModal">
-                                    <b-spinner small></b-spinner>
-                                    Loading...
-                                </b-button>
-                                <button type="submit" class="btn btn-primary btn-raised" v-if="!progressModal"><i class="fa fa-pencil"></i>  SAVE</button>
-                                <button type="reset" class="btn btn-danger btn-raised"><i class="fa fa-undo"></i> RESET</button>
-                            </div>
-                        </div>
-                    </b-form>
-                </b-modal>
-                <!-- End modal -->
-
-                <!-- Edit modal -->
-                <b-modal
-                    id="modal-edit-customer"
-                    class="modal modal-info"
-                    title="XPRO Tradie - Edit Customer"
-                    size="lg"
-                    :hide-footer="true"
-                    @hidden="clearForm"
-                    centered
+                  <i class="fa fa-pencil"></i> Create
+                </button>
+              </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div class="text-center" v-if="spinnerGetAllData">
+                <b-spinner
+                  style="width: 4rem; height: 4rem;"
+                  variant="primary"
+                  label="Text Centered"
+                ></b-spinner>
+              </div>
+              <b-table
+                table
+                table-bordered
+                table-striped
+                ref="table"
+                :items="getAllCustomers"
+                :fields="fieldsCustomer"
+              >
+                <template v-slot:cell(category)="data">
+                  <span v-if="data.item.category == '1'">Company</span>
+                  <span v-if="data.item.category == '2'">Housing</span>
+                </template>
+                <template v-slot:cell(status)="data">
+                  <b-badge
+                    pill
+                    class="badge badge-info"
+                    v-if="data.item.status == '0'"
+                    >NEW</b-badge
+                  >
+                  <b-badge
+                    pill
+                    class="badge badge-success"
+                    v-if="data.item.status == '1'"
+                    >ACTIVE</b-badge
+                  >
+                  <b-badge
+                    pill
+                    class="badge badge-danger"
+                    v-if="data.item.status == '2'"
+                    >BANNED</b-badge
+                  >
+                </template>
+                <template v-slot:cell(action)="data">
+                  <b-row align-v="center">
+                    <b-col cols="*">
+                      <b-button
+                        size="sm"
+                        class="btn btn-raised btn-info btn-sm"
+                        @click.stop="data.toggleDetails"
+                        v-b-tooltip.hover
+                        title="Details"
+                      >
+                        <i class="fa fa-info-circle fa-sm"></i>
+                      </b-button>
+                    </b-col>
+                    <b-col cols="*">
+                      <b-button
+                        size="sm"
+                        class="btn btn-raised btn-success btn-sm"
+                        @click="openEditModal(data.item)"
+                        v-b-tooltip.hover
+                        title="Edit"
+                      >
+                        <i class="fa fa-pencil fa-sm"></i>
+                      </b-button>
+                    </b-col>
+                    <b-col cols="*">
+                      <b-button
+                        size="sm"
+                        class="btn btn-raised btn-danger btn-sm"
+                        @click="openDeleteModal(data.item)"
+                        v-b-tooltip.hover
+                        title="Delete"
+                      >
+                        <i class="fa fa-remove fa-sm"></i>
+                      </b-button>
+                    </b-col>
+                  </b-row>
+                </template>
+                <template slot="row-details" slot-scope="data">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <tr>
+                        <th style="width: 50%;">First Name:</th>
+                        <td>{{ data.item.first_name }}</td>
+                      </tr>
+                      <tr>
+                        <th>Last Name</th>
+                        <td>{{ data.item.last_name }}</td>
+                      </tr>
+                      <tr>
+                        <th>Email</th>
+                        <td>{{ data.item.email }}</td>
+                      </tr>
+                      <tr>
+                        <th>Phone</th>
+                        <td>{{ data.item.phone }}</td>
+                      </tr>
+                      <tr>
+                        <th>Address</th>
+                        <td>{{ data.item.address }}</td>
+                      </tr>
+                      <tr>
+                        <th>Category</th>
+                        <td>
+                          <span v-if="data.item.category == '1'">Company</span>
+                          <span v-if="data.item.category == '2'">Housing</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Company Name</th>
+                        <td>{{ data.item.company_name }}</td>
+                      </tr>
+                      <tr>
+                        <th>ABN/CN Number</th>
+                        <td>{{ data.item.abn_cn_number }}</td>
+                      </tr>
+                      <tr>
+                        <th>Driving Licence</th>
+                        <td>
+                          <img
+                            :src="data.item.driving_licence"
+                            class="img-thumbnail"
+                            alt="driving licence"
+                            style="height: 170px;"
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Photo ID</th>
+                        <td>{{ data.item.photo_id }}</td>
+                      </tr>
+                      <tr>
+                        <th>Avatar</th>
+                        <td>
+                          <img
+                            :src="data.item.avatar"
+                            class="rounded-circle"
+                            alt="avatar"
+                            style="height: 200px;"
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Status</th>
+                        <td>
+                          <b-badge
+                            pill
+                            class="badge badge-info"
+                            v-if="data.item.status == 'NEW'"
+                            >NEW</b-badge
+                          >
+                          <b-badge
+                            pill
+                            class="badge badge-success"
+                            v-if="data.item.status == 'ACTIVE'"
+                            >ACTIVE</b-badge
+                          >
+                          <b-badge
+                            pill
+                            class="badge badge-danger"
+                            v-if="data.item.status == 'BANNED'"
+                            >BANNED</b-badge
+                          >
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Created At</th>
+                        <td>{{ data.item.created_at }}</td>
+                      </tr>
+                    </table>
+                  </div>
+                </template>
+              </b-table>
+            </div>
+            <!-- Create modal -->
+            <b-modal
+              id="modal-create-customer"
+              class="modal modal-info"
+              title="XPRO Tradie - Create Customer"
+              size="lg"
+              :hide-footer="true"
+              centered
+              @hidden="clearForm"
+            >
+              <b-form
+                @submit.prevent="customerStore"
+                enctype="multipart/form-data"
+              >
+                <b-form-group label="First Name" label-for="firstNameInput">
+                  <b-form-input
+                    id="firstNameInput"
+                    v-model="form.firstName"
+                    type="text"
+                    placeholder="Enter Fisrt Name"
+                    required
+                  >
+                  </b-form-input>
+                </b-form-group>
+                <b-form-group label="Last Name" label-for="lastNameInput">
+                  <b-form-input
+                    id="lastNameInput"
+                    v-model="form.lastName"
+                    type="text"
+                    placeholder="Enter Last Name"
+                    required
+                  >
+                  </b-form-input>
+                </b-form-group>
+                <b-form-group label="Email" label-for="emailInput">
+                  <b-form-input
+                    id="emailInput"
+                    v-model="form.email"
+                    type="email"
+                    placeholder="Enter Email"
+                    required
+                  >
+                  </b-form-input>
+                </b-form-group>
+                <b-form-group label="Phone" label-for="phoneInput">
+                  <b-form-input
+                    id="phoneInput"
+                    v-model="form.phone"
+                    type="text"
+                    placeholder="Enter Phone"
+                    required
+                  >
+                  </b-form-input>
+                </b-form-group>
+                <b-form-group label="Address" label-for="addressInput">
+                  <b-form-textarea
+                    id="textarea"
+                    v-model="form.address"
+                    placeholder="Enter Address"
+                    rows="5"
+                    max-rows="6"
+                  >
+                  </b-form-textarea>
+                </b-form-group>
+                <b-form-group label="Category" label-for="categoryInput">
+                  <b-form>
+                    <b-form-select
+                      v-model="form.category"
+                      :options="optionsCategory"
+                      required
+                    ></b-form-select>
+                  </b-form>
+                </b-form-group>
+                <b-form-group label="Company Name" label-for="companyNameInput">
+                  <b-form-input
+                    id="companyNameInput"
+                    v-model="form.companyName"
+                    type="text"
+                    placeholder="Enter Company Name"
+                  >
+                  </b-form-input>
+                </b-form-group>
+                <b-form-group
+                  label="ABN/CN Number"
+                  label-for="abncnNumberInput"
                 >
-                    <b-form @submit.prevent="customerUpdate" enctype="multipart/form-data">
-                        <b-form-input id="id"
-                            v-model="form.id"
-                            hidden>
-                        </b-form-input>
-                        <b-form-group
-                            label="First Name"
-                            label-for="firstNameInput">
-                            <b-form-input id="firstNameInput"
-                                v-model="form.firstName"
-                                type="text"
-                                placeholder="Enter Fisrt Name"
-                                required>
-                            </b-form-input>
-                        </b-form-group>
-                        <b-form-group
-                            label="Last Name"
-                            label-for="lastNameInput">
-                            <b-form-input id="lastNameInput"
-                                v-model="form.lastName"
-                                type="text"
-                                placeholder="Enter Last Name"
-                                required>
-                            </b-form-input>
-                            <b-form-invalid-feedback>
-                                required
-                            </b-form-invalid-feedback>
-                        </b-form-group>
-                        <b-form-group
-                            label="Email"
-                            label-for="emailInput">
-                            <b-form-input id="emailInput"
-                                v-model="form.email"
-                                type="text"
-                                placeholder="Enter Email"
-                                required>
-                            </b-form-input>
-                        </b-form-group>
-                        <b-form-group
-                            label="Phone"
-                            label-for="phoneInput">
-                            <b-form-input id="phoneInput"
-                                v-model="form.phone"
-                                type="text"
-                                placeholder="Enter Phone"
-                                required>
-                            </b-form-input>
-                        </b-form-group>
-                        <b-form-group
-                            label="Address"
-                            label-for="addressInput">
-                            <b-form-textarea
-                                id="textarea"
-                                v-model="form.address"
-                                placeholder="Enter Address"
-                                rows="5"
-                                max-rows="6">
-                            </b-form-textarea>
-                        </b-form-group>
-                       <b-form-group
-                            label="Category"
-                            label-for="categoryInput"> 
-                            <b-form>
-                                <b-form-select v-model="form.category" :options="optionsCategory" class="custom-select" required></b-form-select>
-                            </b-form>
-                       </b-form-group>
-                        <b-form-group
-                            label="Company Name"
-                            label-for="companyNameInput">
-                            <b-form-input id="companyNameInput"
-                                v-model="form.companyName"
-                                type="text"
-                                placeholder="Enter Company Name">
-                            </b-form-input>
-                        </b-form-group>
-                        <b-form-group
-                            label="ABN/CN Number"
-                            label-for="abncnNumberInput">
-                            <b-form-input id="abncnNumberInput"
-                                v-model="form.abncnNumber"
-                                type="text"
-                                placeholder="Enter Company Name">
-                            </b-form-input>
-                        </b-form-group>
-                        <b-form-group
-                            label="Driving Licence"
-                            label-for="drivingLicenceInput">
-                            <b-form-file id="drivingLicenceInput"
-                                v-model="form.drivingLicence"
-                                placeholder="upload image..."
-                                v-on:change="onDrivingLicenceChange">
-                            </b-form-file>
-                            <img :src="form.drivingLicence" class="img-thumbnail" alt="driving licence" style="height: 170px;">
-                        </b-form-group>
-                        <b-form-group
-                            label="Photo ID"
-                            label-for="photoIDInput">
-                            <b-form-input id="photoIDInput"
-                                v-model="form.photoID"
-                                type="text"
-                                placeholder="Enter Photo ID"
-                                required>
-                            </b-form-input>
-                        </b-form-group>
-                        <b-form-group
-                            label="Avatar"
-                            label-for="avatarInput">
-                            <b-form-file id="avatarInput"
-                                v-model="form.avatar"
-                                placeholder="upload image..."
-                                v-on:change="onAvatarChange">
-                            </b-form-file>
-                            <img :src="form.avatar" class="rounded-circle" alt="driving licence" style="height: 200px;">
-                        </b-form-group>
-                        <b-form-group
-                            label="Status"
-                            label-for="statusInput">
-                            <b-form>
-                                <b-form-select v-model="form.status" :options="optionsStatus"></b-form-select>
-                            </b-form>
-                        </b-form-group>
-                        <div class="d-flex justify-content-end">
-                            <div class="form-group">
-                                <b-button class="btn btn-primary btn-raised" v-if="progressModal">
-                                    <b-spinner small></b-spinner>
-                                    Loading...
-                                </b-button>
-                                <button type="submit" class="btn btn-primary btn-raised" v-if="!progressModal"><i class="fa fa-pencil"></i>  UPDATE</button>
-                                <button type="reset" class="btn btn-danger btn-raised"><i class="fa fa-undo"></i> RESET</button>
-                            </div>
-                        </div>
-                    </b-form>
-                </b-modal>
-                <!-- End modal -->
-
-                 <!-- Delete modal -->
-                <b-modal
-                    id="modal-delete-customer"
-                    title="Delete Customer"
-                    size="md"
-                    class="modal-danger"
-                    :hide-footer="true"
-                    @hidden="clearForm"
-                    centered>
-                    <p>Are you sure want to delete customer [{{ form.id }}] - [{{ form.firstName }}] [{{ form.lastName }}]</p>
-                    <div class="d-flex justify-content-end">
-                        <div class="form-group">
-                            <b-button class="btn btn-primary btn-raised" v-if="progressModal">
-                                <b-spinner small></b-spinner>
-                                Loading...
-                            </b-button>
-                            <button type="submit" class="btn btn-primary btn-raised" v-if="!progressModal" @click.prevent="customerDelete()"><i class="fa fa-pencil"></i>  DELETE</button>
-                        </div>
-                    </div>
-                </b-modal>
-                <!-- /.box-body -->
-            </div>
-            <!-- /.box -->
-            </div>
-            <!-- /.col -->
+                  <b-form-input
+                    id="abncnNumberInput"
+                    v-model="form.abncnNumber"
+                    type="text"
+                    placeholder="Enter Company Name"
+                  >
+                  </b-form-input>
+                </b-form-group>
+                <b-form-group
+                  label="Driving Licence"
+                  label-for="drivingLicenceInput"
+                >
+                  <b-form-file
+                    id="drivingLicenceInput"
+                    v-model="form.drivingLicence"
+                    placeholder="upload image..."
+                    v-on:change="onDrivingLicenceChange"
+                  >
+                  </b-form-file>
+                  <div id="preview">
+                    <img v-if="prevDrivingLicence" :src="prevDrivingLicence" />
+                  </div>
+                </b-form-group>
+                <b-form-group label="Photo ID" label-for="photoIDInput">
+                  <b-form-input
+                    id="photoIDInput"
+                    v-model="form.photoID"
+                    type="text"
+                    placeholder="Enter Photo ID"
+                    required
+                  >
+                  </b-form-input>
+                </b-form-group>
+                <b-form-group label="Avatar" label-for="avatarInput">
+                  <b-form-file
+                    id="avatarInput"
+                    v-model="form.avatar"
+                    placeholder="upload image..."
+                    v-on:change="onAvatarChange"
+                  >
+                  </b-form-file>
+                  <div id="preview">
+                    <img v-if="prevAvatar" :src="prevAvatar" />
+                  </div>
+                </b-form-group>
+                <b-form-group label="Status" label-for="statusInput">
+                  <b-form>
+                    <b-form-select
+                      v-model="form.status"
+                      :options="optionsStatus"
+                    ></b-form-select>
+                  </b-form>
+                </b-form-group>
+                <div class="d-flex justify-content-end">
+                  <div class="form-group">
+                    <b-button
+                      class="btn btn-primary btn-raised"
+                      v-if="progressModal"
+                    >
+                      <b-spinner small></b-spinner>
+                      Loading...
+                    </b-button>
+                    <button
+                      type="submit"
+                      class="btn btn-primary btn-raised"
+                      v-if="!progressModal"
+                    >
+                      <i class="fa fa-pencil"></i> SAVE
+                    </button>
+                    <button type="reset" class="btn btn-danger btn-raised">
+                      <i class="fa fa-undo"></i> RESET
+                    </button>
+                  </div>
+                </div>
+              </b-form>
+            </b-modal>
+            <!-- End modal -->
+            <!-- Edit modal -->
+            <b-modal
+              id="modal-edit-customer"
+              class="modal modal-info"
+              title="XPRO Tradie - Edit Customer"
+              size="lg"
+              :hide-footer="true"
+              @hidden="clearForm"
+              centered
+            >
+              <b-form
+                @submit.prevent="customerUpdate"
+                enctype="multipart/form-data"
+              >
+                <b-form-input id="id" v-model="form.id" hidden> </b-form-input>
+                <b-form-group label="First Name" label-for="firstNameInput">
+                  <b-form-input
+                    id="firstNameInput"
+                    v-model="form.firstName"
+                    type="text"
+                    placeholder="Enter Fisrt Name"
+                    required
+                  >
+                  </b-form-input>
+                </b-form-group>
+                <b-form-group label="Last Name" label-for="lastNameInput">
+                  <b-form-input
+                    id="lastNameInput"
+                    v-model="form.lastName"
+                    type="text"
+                    placeholder="Enter Last Name"
+                    required
+                  >
+                  </b-form-input>
+                  <b-form-invalid-feedback>
+                    required
+                  </b-form-invalid-feedback>
+                </b-form-group>
+                <b-form-group label="Email" label-for="emailInput">
+                  <b-form-input
+                    id="emailInput"
+                    v-model="form.email"
+                    type="text"
+                    placeholder="Enter Email"
+                    required
+                  >
+                  </b-form-input>
+                </b-form-group>
+                <b-form-group label="Phone" label-for="phoneInput">
+                  <b-form-input
+                    id="phoneInput"
+                    v-model="form.phone"
+                    type="text"
+                    placeholder="Enter Phone"
+                    required
+                  >
+                  </b-form-input>
+                </b-form-group>
+                <b-form-group label="Address" label-for="addressInput">
+                  <b-form-textarea
+                    id="textarea"
+                    v-model="form.address"
+                    placeholder="Enter Address"
+                    rows="5"
+                    max-rows="6"
+                  >
+                  </b-form-textarea>
+                </b-form-group>
+                <b-form-group label="Category" label-for="categoryInput">
+                  <b-form>
+                    <b-form-select
+                      v-model="form.category"
+                      :options="optionsCategory"
+                      class="custom-select"
+                      required
+                    ></b-form-select>
+                  </b-form>
+                </b-form-group>
+                <b-form-group label="Company Name" label-for="companyNameInput">
+                  <b-form-input
+                    id="companyNameInput"
+                    v-model="form.companyName"
+                    type="text"
+                    placeholder="Enter Company Name"
+                  >
+                  </b-form-input>
+                </b-form-group>
+                <b-form-group
+                  label="ABN/CN Number"
+                  label-for="abncnNumberInput"
+                >
+                  <b-form-input
+                    id="abncnNumberInput"
+                    v-model="form.abncnNumber"
+                    type="text"
+                    placeholder="Enter Company Name"
+                  >
+                  </b-form-input>
+                </b-form-group>
+                <b-form-group
+                  label="Driving Licence"
+                  label-for="drivingLicenceInput"
+                >
+                  <b-form-file
+                    id="drivingLicenceInput"
+                    v-model="form.drivingLicence"
+                    placeholder="upload image..."
+                    v-on:change="onDrivingLicenceChange"
+                  >
+                  </b-form-file>
+                  <img
+                    :src="form.drivingLicence"
+                    class="img-thumbnail"
+                    alt="driving licence"
+                    style="height: 170px;"
+                  />
+                </b-form-group>
+                <b-form-group label="Photo ID" label-for="photoIDInput">
+                  <b-form-input
+                    id="photoIDInput"
+                    v-model="form.photoID"
+                    type="text"
+                    placeholder="Enter Photo ID"
+                    required
+                  >
+                  </b-form-input>
+                </b-form-group>
+                <b-form-group label="Avatar" label-for="avatarInput">
+                  <b-form-file
+                    id="avatarInput"
+                    v-model="form.avatar"
+                    placeholder="upload image..."
+                    v-on:change="onAvatarChange"
+                  >
+                  </b-form-file>
+                  <img
+                    :src="form.avatar"
+                    class="rounded-circle"
+                    alt="driving licence"
+                    style="height: 200px;"
+                  />
+                </b-form-group>
+                <b-form-group label="Status" label-for="statusInput">
+                  <b-form>
+                    <b-form-select
+                      v-model="form.status"
+                      :options="optionsStatus"
+                    ></b-form-select>
+                  </b-form>
+                </b-form-group>
+                <div class="d-flex justify-content-end">
+                  <div class="form-group">
+                    <b-button
+                      class="btn btn-primary btn-raised"
+                      v-if="progressModal"
+                    >
+                      <b-spinner small></b-spinner>
+                      Loading...
+                    </b-button>
+                    <button
+                      type="submit"
+                      class="btn btn-primary btn-raised"
+                      v-if="!progressModal"
+                    >
+                      <i class="fa fa-pencil"></i> UPDATE
+                    </button>
+                    <button type="reset" class="btn btn-danger btn-raised">
+                      <i class="fa fa-undo"></i> RESET
+                    </button>
+                  </div>
+                </div>
+              </b-form>
+            </b-modal>
+            <!-- End modal -->
+            <!-- Delete modal -->
+            <b-modal
+              id="modal-delete-customer"
+              title="Delete Customer"
+              size="md"
+              class="modal-danger"
+              :hide-footer="true"
+              @hidden="clearForm"
+              centered
+            >
+              <p>
+                Are you sure want to delete customer [{{ form.id }}] - [{{ form.firstName
+                }}] [{{ form.lastName }}]
+              </p>
+              <div class="d-flex justify-content-end">
+                <div class="form-group">
+                  <b-button
+                    class="btn btn-primary btn-raised"
+                    v-if="progressModal"
+                  >
+                    <b-spinner small></b-spinner>
+                    Loading...
+                  </b-button>
+                  <button
+                    type="submit"
+                    class="btn btn-primary btn-raised"
+                    v-if="!progressModal"
+                    @click.prevent="customerDelete()"
+                  >
+                    <i class="fa fa-pencil"></i> DELETE
+                  </button>
+                </div>
+              </div>
+            </b-modal>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
         </div>
-        <!-- /.row -->
-        </section>
-        <!-- /.content -->
-    </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
+  </div>
 </template>
 
 <script>
@@ -500,9 +635,6 @@ export default {
                 { value: 1, text: 'Approved' },
                 { value: 2, text: 'Ban' },
             ],
-            prevDrivingLicence: null,
-            prevAvatar: null,
-            validation: [],
             fieldsCustomer: [
                 {
                     key: 'id'
@@ -525,6 +657,10 @@ export default {
                 'Status',
                 'Action'
             ],
+            prevDrivingLicence: null,
+            prevAvatar: null,
+            validation: [],
+             spinnerGetAllData: false,
         }
     },
     methods: {
@@ -598,6 +734,7 @@ export default {
             )
             return promise.then((response) => {
                 const customers = response.data
+                this.spinnerGetAllData = false;
                 return (customers.data)
                 }).catch(error => {
                 console.log(error)
@@ -702,26 +839,29 @@ export default {
                 }).catch(error => {});
         },
     },
+    created() {
+        this.spinnerGetAllData = true;
+        this.getAllCompanySettings();
+    }
 }
 </script>
 
 <style>
-    .form-group label {
-        color: black;
-        font-weight: 600;
-    }
-    .modal-content .modal-header {
-        background-color: #00c0ef !important;
-        padding-bottom: 20px;
-    }
-    #preview {
-        display: block;
-        justify-content: center;
-        align-items: center;
-    }
-
-    #preview img {
-        max-width: 30%;
-        max-height: 30%;
-    }
+  .form-group label {
+      color: black;
+      font-weight: 600;
+  }
+  .modal-content .modal-header {
+      background-color: #00c0ef !important;
+      padding-bottom: 20px;
+  }
+  #preview {
+      display: block;
+      justify-content: center;
+      align-items: center;
+  }
+  #preview img {
+      max-width: 30%;
+      max-height: 30%;
+  }
 </style>
