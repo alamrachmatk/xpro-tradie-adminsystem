@@ -14,8 +14,7 @@
   <link rel="stylesheet" href="{{url('template/bower_components/Ionicons/css/ionicons.min.css')}}">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{url('template/dist/css/AdminLTE.min.css')}}">
-  <!-- Material Design -->
-  <link rel="stylesheet" href="{{url('template/dist/css/bootstrap-material-design.min.css')}}">
+  <!-- Material Design --> 
   <link rel="stylesheet" href="{{url('template/dist/css/ripples.min.css')}}">
   <link rel="stylesheet" href="{{url('template/dist/css/MaterialAdminLTE.min.css')}}">
   <!-- AdminLTE Skins. Choose a skin from the css/skins

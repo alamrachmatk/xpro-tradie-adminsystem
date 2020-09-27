@@ -9,10 +9,18 @@ use App\Http\Controllers\Controller;
 
 class CustomerController extends Controller 
 {
-    public function index() {
-        $query = Customers::orderBy('id', 'DESC')->where('deleted', 0)->get();
+    public function index(Request $request) {
+        $query = Customers::orderBy('id', 'DESC')->where('deleted', 0)->paginate($request->limit);
+     
+        $meta = [
+            'total' => $query->total(),
+            'per_page' => $request->limit,
+            'current_page' => $query->currentPage(),
+            'next_page_url' => $query->nextPageUrl(),
+            'prev_page_url' => $query->previousPageUrl(),
+        ];
         $data = [];
-        
+
         foreach($query as $value) {
             $data[] = [
                 'id' => $value->id,
@@ -34,10 +42,11 @@ class CustomerController extends Controller
                 'updated_by' => $value->updated_by,
             ];
         }
-
+ 
         return response([
             'success' => true,
-            'message' => 'Data Customers',
+            'message' => 'Data Customer',
+            'meta' => $meta,
             'data' => $data
         ]);
     }

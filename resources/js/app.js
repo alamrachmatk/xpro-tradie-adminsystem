@@ -41,8 +41,14 @@ import BiddingComponent from "./components/biddings/Index.vue"
 import BiddingDetailComponent from "./components/biddings/Indexdetail.vue"
 import WorkOrderComponent from "./components/workorders/Index.vue"
 import WorkOrderDetailComponent from "./components/workorders/Indexdetail.vue"
+import DashboardComponent from "./components/dashboard/Chart.vue"
 
 const routes = [
+    {
+      name: 'dashboard',
+      path: '/',
+      component: DashboardComponent
+    },  
     {
       name: 'customers',
       path: '/cust',
