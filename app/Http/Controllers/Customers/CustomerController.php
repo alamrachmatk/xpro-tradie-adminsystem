@@ -10,8 +10,15 @@ use App\Http\Controllers\Controller;
 class CustomerController extends Controller 
 {
     public function index(Request $request) {
-        $query = Customers::orderBy('id', 'DESC')->where('deleted', 0)->paginate($request->limit);
-     
+
+        if($request->sortdesc == 'false' ) {
+            $request->sortdesc = 'ASC';
+        } else {
+            $request->sortdesc = 'DESC';
+        }
+        
+        $query = Customers::orderBy($request->sortby, $request->sortdesc)->where('deleted', 0)->paginate($request->limit);
+
         $meta = [
             'total' => $query->total(),
             'per_page' => $request->limit,
@@ -20,7 +27,7 @@ class CustomerController extends Controller
             'prev_page_url' => $query->previousPageUrl(),
         ];
         $data = [];
-
+        
         foreach($query as $value) {
             $data[] = [
                 'id' => $value->id,
@@ -42,6 +49,7 @@ class CustomerController extends Controller
                 'updated_by' => $value->updated_by,
             ];
         }
+ 
  
         return response([
             'success' => true,

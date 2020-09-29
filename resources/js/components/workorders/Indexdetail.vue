@@ -266,6 +266,8 @@
 </template>
 
 <script>
+import config from "../../Config"
+
 export default {
     data:function() {
         return {
@@ -302,8 +304,7 @@ export default {
     },
     methods: {
         getAllWorkOrder() {
-            console.log('aaaa')
-            let url = 'http://localhost:8000/api/workorders';
+            let url = config.API_LOCATION + '/workorders';
             let promise = axios.get(
                 url,{
                 params: {

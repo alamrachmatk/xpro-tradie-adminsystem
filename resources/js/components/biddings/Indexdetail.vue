@@ -308,6 +308,8 @@
 </template>
 
 <script>
+import config from "../../Config"
+
 export default {
     data:function(){
         return {
@@ -351,7 +353,7 @@ export default {
             this.$bvModal.show('modal-bid');
         },
         getAllBidding() {
-            let url = 'http://localhost:8000/api/biddings';
+            let url = config.API_LOCATION + '/biddings';
             let promise = axios.get(
                 url,{
                 params: {
@@ -382,7 +384,7 @@ export default {
                     headers: { 'content-type': 'multipart/form-data' }
             }
 
-            let url = 'http://localhost:8000/api/biddings/create';
+            let url = config.API_LOCATION + '/biddings/create';
             this.axios.post(url, data, config)
                 .then((response) => {
                     this.progressModal = false;

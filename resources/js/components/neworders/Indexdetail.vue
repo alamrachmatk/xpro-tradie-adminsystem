@@ -359,6 +359,8 @@
 </template>
 
 <script>
+import config from "../../Config"
+
 export default {
     data:function(){
         return {
@@ -400,7 +402,7 @@ export default {
             this.$bvModal.show('modal-reject-neworder');
         },
         getAllNewOrders() {
-            let url = 'http://localhost:8000/api/neworders';
+            let url = config.API_LOCATION + '/neworders';
             let promise = axios.get(
                 url,{
                 params: {
@@ -425,7 +427,7 @@ export default {
                 headers: { 'content-type': 'multipart/form-data' }
             }
             
-            let url =  `http://localhost:8000/api/neworders/reject/${this.form.id}`;
+            let url =  config.API_LOCATION + `/neworders/reject/${this.form.id}`;
             this.axios.post(url, data, config)
                 .then((response) => {
                     this.progressModal = false;

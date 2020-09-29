@@ -71,10 +71,6 @@
                   label="Text Centered"
                 ></b-spinner>
 							</div>
-              <div>
-                Sorting By: <b>{{ sortBy }}</b>, Sort Direction:
-                <b>{{ sortDesc ? 'Descending' : 'Ascending' }}</b>
-              </div>
 							<b-table
                 table
                 table-bordered
@@ -616,6 +612,8 @@
 
 
 <script>
+import BubbleChart from '../dashboard/BubbleChart'
+import config from "../../Config"
 
 export default {
     data: function () {
@@ -656,7 +654,7 @@ export default {
             totalRows: 0,
             progressModal: false,
             sortBy: 'id',
-            sortDesc: false,
+            sortDesc: true,
             optionsCategory: [
                 { value: null, text: 'Please select an category' },
                 { value: 1, text: 'Company' },
@@ -770,7 +768,7 @@ export default {
             this.prevAvatar = null;
         },
         getAllCustomers() {
-            let url = 'http://localhost:8000/api/customers?limit=' + this.perPage + '&page=' + this.currentPage;
+            let url = config.API_LOCATION + '/customers?sortby=' + this.sortBy + '&sortdesc=' + this.sortDesc + '&limit=' + this.perPage + '&page=' + this.currentPage;
             let promise = axios.get(
                 url
             )
@@ -805,7 +803,7 @@ export default {
                     headers: { 'content-type': 'multipart/form-data' }
             }
 
-            let url = 'http://localhost:8000/api/customers/store';
+            let url = config.API_LOCATION + '/customers/store';
             this.axios.post(url, data, config)
                 .then((response) => {
                     this.progressModal = false;
@@ -856,7 +854,7 @@ export default {
                 headers: { 'content-type': 'multipart/form-data' }
             }
 
-            let url = `http://localhost:8000/api/customers/update/${this.form.id}`;
+            let url = config.API_LOCATION + `/customers/update/${this.form.id}`;
             this.axios.post(url, data, config)
                 .then((response) => {
                     this.progressModal = false;
@@ -873,7 +871,7 @@ export default {
                 headers: { 'content-type': 'multipart/form-data' }
             }
 
-            let url = `http://localhost:8000/api/customers/delete/${this.form.id}`;
+            let url = config.API_LOCATION + `/customers/delete/${this.form.id}`;
             this.axios.post(url, data, config)
                 .then((response) => {
                     this.progressModal = false;
@@ -884,7 +882,6 @@ export default {
     },
     created() {
         this.spinnerGetAllData = true;
-        this.getAllCompanySettings();
     }
 }
 </script>

@@ -71,6 +71,8 @@
 </template>
 
 <script>
+
+import config from "../../Config"
 export default {
     data:function() {
         return {
@@ -80,7 +82,7 @@ export default {
     },
     methods: {
         getAllCompanySettings() {
-            let uri = 'http://localhost:8000/api/companysettings';
+            let uri = config.API_LOCATION + '/companysettings';
             let promise = axios.get(
                 uri
             )
